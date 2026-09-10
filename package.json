@@ -1,0 +1,27 @@
+{
+  "name": "puente-mariano-ospina-perez",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Sitio web interactivo del nuevo Puente Mariano Ospina Pérez sobre el río Cauca (La Unión - La Victoria, Valle del Cauca)",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@react-three/drei": "^9.114.3",
+    "@react-three/fiber": "^8.17.10",
+    "next": "^14.2.15",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "three": "^0.169.0"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.4.20",
+    "eslint": "^8.57.1",
+    "eslint-config-next": "^14.2.15",
+    "postcss": "^8.4.47",
+    "tailwindcss": "^3.4.13"
+  }
+}
