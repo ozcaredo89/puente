@@ -1,8 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import { perfilLongitudinal, datosLuz } from "@/data/proyecto";
+import { perfilLongitudinal, datosLuz, referenciaGeografica } from "@/data/proyecto";
 import { SectionHeading } from "./DatosTecnicos";
+import Brujula from "./cartografia/Brujula";
+import MarcoEsquinas from "./cartografia/MarcoEsquinas";
+import EscalaGrafica from "./cartografia/EscalaGrafica";
 
 /**
  * PlanosSVG — Perfil longitudinal paramétrico del puente sobre el río Cauca.
@@ -228,7 +231,14 @@ export default function PlanosSVG() {
             de diseño mostradas en la ficha técnica."
         />
 
-        <div className="mt-10 rounded-2xl border border-rio-700 bg-rio-900/50 p-4 md:p-8">
+        <div className="mt-10 relative rounded-lg border border-rio-700 bg-rio-900/50 p-4 md:p-8">
+          <MarcoEsquinas tamano={20} className="text-acero-500/70" />
+
+          <div className="absolute top-3 right-3 flex flex-col items-end gap-1 text-acero-400/70 z-10">
+            <Brujula className="w-7 h-7" title="Norte (referencial)" />
+            <span className="font-mono text-[9px]">N</span>
+          </div>
+
           <svg
             viewBox={`0 0 ${VB_W} ${VB_H}`}
             className="w-full h-auto select-none"
@@ -385,7 +395,25 @@ export default function PlanosSVG() {
                 -35 m
               </text>
             </g>
+
+            {/* Coordenadas geográficas de referencia en cada margen */}
+            <g fontFamily="monospace" fontSize="9" fill="#4a90b8" opacity="0.8">
+              <text x={escalaX(0)} y={VB_H - MARGEN_INF + 16} textAnchor="middle">
+                {referenciaGeografica.laUnion.etiqueta}
+              </text>
+              <text x={escalaX(140)} y={VB_H - MARGEN_INF + 16} textAnchor="middle">
+                {referenciaGeografica.laVictoria.etiqueta}
+              </text>
+            </g>
           </svg>
+
+          {/* Cajetín tipo plano de ingeniería */}
+          <div className="mt-4 flex flex-wrap items-center justify-between gap-3 border-t border-dashed border-rio-700 pt-3 font-mono text-[10px] text-slate-500">
+            <span>PLANO · PERFIL LONGITUDINAL</span>
+            <span>DATUM {referenciaGeografica.datum} · UTM {referenciaGeografica.zonaUTM}</span>
+            <EscalaGrafica distanciaTotal={140} segmentos={4} className="text-slate-500" />
+            <span>HOJA 1/1 · ESC. GRÁF.</span>
+          </div>
         </div>
 
         {/* Panel de detalle */}
@@ -406,7 +434,10 @@ export default function PlanosSVG() {
             ))}
           </div>
 
-          <div className="rounded-xl border border-rio-700 bg-rio-900/50 p-5 min-h-[92px]">
+          <div className="rounded-lg border border-dashed border-rio-700 bg-rio-900/50 p-5 min-h-[92px]">
+            <span className="block mb-2 font-mono text-[10px] uppercase tracking-widest text-slate-600">
+              Leyenda
+            </span>
             {elementoActivo ? (
               <>
                 <span className="text-xs font-mono uppercase tracking-wide text-acero-500">

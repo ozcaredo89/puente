@@ -23,8 +23,9 @@ export default function DatosTecnicos() {
             return (
               <article
                 key={item.id}
-                className="group relative rounded-2xl border border-rio-700 bg-rio-900/60 p-6 hover:border-acero-600/60 transition-colors"
+                className="group relative rounded-lg border border-dashed border-rio-700 bg-rio-900/60 p-6 hover:border-acero-600/60 transition-colors"
               >
+                <PuntoControl className="absolute -top-1.5 -left-1.5 text-acero-500/50" />
                 <div className="flex items-start justify-between">
                   <div className="rounded-xl bg-acero-600/10 p-3 text-acero-400">
                     {Icon ? <Icon className="w-6 h-6" /> : null}
@@ -48,11 +49,27 @@ export default function DatosTecnicos() {
   );
 }
 
+// Marca de punto de control geodésico (motivo cartográfico reutilizado
+// como viñeta decorativa en tarjetas y encabezados de sección).
+export function PuntoControl({ className = "" }) {
+  return (
+    <svg viewBox="0 0 16 16" className={`w-3 h-3 ${className}`} aria-hidden="true">
+      <circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" strokeWidth="1" />
+      <path d="M8 0v4M8 12v4M0 8h4M12 8h4" stroke="currentColor" strokeWidth="1" />
+    </svg>
+  );
+}
+
 export function SectionHeading({ eyebrow, title, description, light }) {
   return (
     <div className="max-w-3xl">
       {eyebrow && (
-        <span className="text-xs font-mono uppercase tracking-widest text-acero-500">
+        <span
+          className={`inline-flex items-center gap-1.5 text-xs font-mono uppercase tracking-widest ${
+            light ? "text-acero-600" : "text-acero-500"
+          }`}
+        >
+          <PuntoControl />
           {eyebrow}
         </span>
       )}

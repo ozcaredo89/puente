@@ -4,6 +4,9 @@ import { Suspense, useMemo, useRef, useState } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { Html, OrbitControls, ContactShadows } from "@react-three/drei";
 import { perfilLongitudinal } from "@/data/proyecto";
+import Brujula from "./cartografia/Brujula";
+import MarcoEsquinas from "./cartografia/MarcoEsquinas";
+import EscalaGrafica from "./cartografia/EscalaGrafica";
 
 /**
  * Visor 3D — Placeholder funcional
@@ -245,8 +248,15 @@ export default function Visor3D({
         />
       </Canvas>
 
+      <MarcoEsquinas className="text-acero-500/60" />
+
+      <div className="absolute top-3 right-3 flex flex-col items-end gap-1 text-acero-400/70">
+        <Brujula className="w-8 h-8" title="Norte (referencial)" />
+        <span className="font-mono text-[9px]">N</span>
+      </div>
+
       {mostrarControles && (
-        <div className="absolute bottom-3 left-3 right-3 flex flex-wrap items-center justify-between gap-2 text-xs">
+        <div className="absolute bottom-3 left-3 right-3 flex flex-wrap items-end justify-between gap-2 text-xs">
           <div className="flex gap-2">
             <ToggleBtn activo={rotando} onClick={() => setRotando((v) => !v)}>
               {rotando ? "⏸ Pausar rotación" : "▶ Rotar automáticamente"}
@@ -258,9 +268,12 @@ export default function Visor3D({
               🌊 Nivel del río
             </ToggleBtn>
           </div>
-          <span className="hidden sm:inline text-acero-400/70 font-mono">
-            arrastra para girar · scroll para zoom
-          </span>
+          <div className="hidden sm:flex flex-col items-end gap-1 text-acero-400/70">
+            <EscalaGrafica distanciaTotal={140} segmentos={4} />
+            <span className="font-mono text-[10px]">
+              arrastra para girar · scroll para zoom
+            </span>
+          </div>
         </div>
       )}
     </div>

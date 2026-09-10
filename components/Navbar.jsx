@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { proyecto } from "@/data/proyecto";
+import Brujula from "./cartografia/Brujula";
 
 const enlaces = [
   { href: "#visor", label: "Modelo 3D" },
@@ -9,6 +10,7 @@ const enlaces = [
   { href: "#fases", label: "Fases" },
   { href: "#planos", label: "Planos" },
   { href: "#normativa", label: "Normativa" },
+  { href: "#apoyo", label: "Apoyar" },
 ];
 
 export default function Navbar() {
@@ -18,7 +20,7 @@ export default function Navbar() {
     <header className="fixed top-0 inset-x-0 z-50 border-b border-rio-800/80 bg-rio-950/85 backdrop-blur">
       <nav className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
         <a href="#inicio" className="flex items-center gap-2">
-          <span className="h-2.5 w-2.5 rounded-full bg-acero-500" />
+          <Brujula className="w-5 h-5 text-acero-500" />
           <span className="font-semibold text-slate-100 text-sm md:text-base">
             {proyecto.nombre}
           </span>

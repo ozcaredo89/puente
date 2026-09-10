@@ -13,6 +13,15 @@ export const proyecto = {
   },
 };
 
+// Referencia geográfica aproximada (uso cartográfico/decorativo del sitio,
+// no reemplaza los levantamientos topográficos oficiales del proyecto).
+export const referenciaGeografica = {
+  datum: "MAGNA-SIRGAS",
+  zonaUTM: "18N",
+  laUnion: { lat: 4.5333, lon: -76.1, etiqueta: "4°32′N 76°06′O" },
+  laVictoria: { lat: 4.5167, lon: -76.0333, etiqueta: "4°31′N 76°02′O" },
+};
+
 export const datosLuz = {
   longitudTotal: 140, // metros, luz libre continua sin apoyos intermedios en el cauce
   anchoTablero: 12, // metros

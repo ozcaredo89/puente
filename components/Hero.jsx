@@ -1,7 +1,10 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { proyecto, datosLuz } from "@/data/proyecto";
+import { proyecto, datosLuz, referenciaGeografica } from "@/data/proyecto";
+import Brujula from "./cartografia/Brujula";
+import LineasContorno from "./cartografia/LineasContorno";
+import CoordTag from "./cartografia/CoordTag";
 
 const Visor3D = dynamic(() => import("./Visor3D"), {
   ssr: false,
@@ -18,9 +21,12 @@ export default function Hero() {
       id="inicio"
       className="relative overflow-hidden bg-rio-950 text-slate-100"
     >
-      {/* Fondo: grid técnico sutil */}
+      {/* Fondo: graticula tipo carta náutica + curvas de nivel */}
       <div className="absolute inset-0 bg-grid-pattern bg-[size:48px_48px] opacity-40 pointer-events-none" />
+      <LineasContorno className="text-acero-500" opacity={0.12} />
       <div className="absolute inset-0 bg-gradient-to-b from-rio-950 via-rio-950/95 to-rio-950 pointer-events-none" />
+
+      <Brujula className="hidden md:block absolute top-24 right-6 w-14 h-14 text-acero-500/50" />
 
       <div className="relative max-w-7xl mx-auto px-6 pt-28 pb-16 md:pt-36 md:pb-24">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
@@ -36,6 +42,14 @@ export default function Hero() {
             <p className="mt-2 text-lg md:text-xl text-acero-400 font-medium">
               Nueva conexión sobre el {proyecto.rio} entre La Unión y La Victoria
             </p>
+
+            <div className="mt-3 flex flex-wrap gap-2">
+              <CoordTag>La Unión {referenciaGeografica.laUnion.etiqueta}</CoordTag>
+              <CoordTag>La Victoria {referenciaGeografica.laVictoria.etiqueta}</CoordTag>
+              <span className="inline-flex items-center rounded-sm border border-rio-700 bg-rio-900/60 px-2 py-0.5 font-mono text-[10px] tracking-wide text-slate-500">
+                Datum {referenciaGeografica.datum} · Zona UTM {referenciaGeografica.zonaUTM}
+              </span>
+            </div>
 
             <p className="mt-6 text-base md:text-lg text-slate-300 leading-relaxed max-w-xl">
               En {proyecto.colapso.anio}, el puente original que unía a estas

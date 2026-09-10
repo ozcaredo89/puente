@@ -19,7 +19,7 @@ export default function Timeline() {
 
         <ol className="mt-16 relative">
           <div
-            className="absolute left-[27px] top-2 bottom-2 w-px bg-gradient-to-b from-acero-500 via-acero-600/50 to-transparent"
+            className="absolute left-[27px] top-2 bottom-2 border-l-2 border-dashed border-acero-600/50"
             aria-hidden="true"
           />
 
