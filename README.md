@@ -74,25 +74,19 @@ un modelo real modelado en Blender o FreeCAD:
 El resto del visor (controles de órbita, botones de rotación/etiquetas/nivel
 del río, iluminación) sigue funcionando sin cambios.
 
-## Activar la sección de comentarios
+## Sección de comentarios
 
 La sección "Comentarios" (`components/Comentarios.jsx`) usa
 [giscus](https://giscus.app), que guarda los comentarios como hilos de
 **GitHub Discussions** de este mismo repositorio (no requiere backend ni
-base de datos propia). Ya está apuntando al repo `ozcaredo89/puente`, pero
-falta un paso manual para activarla:
+base de datos propia). Ya está configurada y apuntando al repo
+`ozcaredo89/puente`, categoría `General`.
 
-1. En el repositorio en GitHub: **Settings → General → Features** → activa
-   **Discussions**.
-2. Instala la app de giscus en el repo: <https://github.com/apps/giscus>.
-3. Ve a <https://giscus.app>, en la pestaña "repositorio" escribe
-   `ozcaredo89/puente`, elige la categoría de discusión a usar (por defecto
-   `General`) y copia el valor `data-category-id` que te muestra.
-4. Pega ese valor en `GISCUS_CATEGORY_ID` dentro de
-   `components/Comentarios.jsx`.
-
-Hasta que se complete el paso 4, la sección se muestra en el sitio con un
-aviso de "pendiente de activar" en lugar del widget.
+Si alguna vez necesitas regenerar la configuración (por ejemplo, si cambias
+de repositorio o de categoría), vuelve a
+<https://giscus.app>, escribe el repositorio, elige la categoría y copia los
+nuevos valores `data-repo-id` / `data-category-id` en las constantes
+`GISCUS_REPO_ID` / `GISCUS_CATEGORY_ID` de `components/Comentarios.jsx`.
 
 ## Despliegue
 

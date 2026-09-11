@@ -4,26 +4,20 @@ import { useEffect, useRef } from "react";
 import { SectionHeading } from "./DatosTecnicos";
 import MarcoEsquinas from "./cartografia/MarcoEsquinas";
 
-// Configuración de giscus (github.com/giscus/giscus) para el repo
-// ozcaredo89/puente. GISCUS_REPO_ID ya corresponde a este repositorio.
-// GISCUS_CATEGORY_ID queda pendiente porque el repo aún no tiene GitHub
-// Discussions habilitado: sin ese valor real el widget no carga (solo se ve
-// el marco vacío). Para completarlo:
-//   1. Habilita Discussions en Settings → General → Features del repo.
-//   2. Instala la app de giscus: https://github.com/apps/giscus
-//   3. Genera la configuración en https://giscus.app (pestaña "repositorio")
-//      y copia aquí los valores data-category y data-category-id.
+// Configuración de giscus (github.com/giscus/giscus) generada en
+// https://giscus.app para el repo ozcaredo89/puente, con GitHub Discussions
+// habilitado y la categoría "General".
 const GISCUS_REPO = "ozcaredo89/puente";
 const GISCUS_REPO_ID = "R_kgDOUVtqpw";
 const GISCUS_CATEGORY = "General";
-const GISCUS_CATEGORY_ID = ""; // TODO: pegar aquí el data-category-id de giscus.app
+const GISCUS_CATEGORY_ID = "DIC_kwDOUVtqp84DFWC_";
 
 export default function Comentarios() {
   const contenedorRef = useRef(null);
 
   useEffect(() => {
     const contenedor = contenedorRef.current;
-    if (!contenedor || !GISCUS_CATEGORY_ID) return;
+    if (!contenedor) return;
 
     const script = document.createElement("script");
     script.src = "https://giscus.app/client.js";
@@ -65,16 +59,7 @@ export default function Comentarios() {
 
         <div className="mt-12 relative rounded-lg border border-dashed border-acero-600/50 bg-rio-900/60 p-6 md:p-10">
           <MarcoEsquinas tamano={22} className="text-acero-500/70" />
-          {GISCUS_CATEGORY_ID ? (
-            <div ref={contenedorRef} className="giscus" />
-          ) : (
-            <p className="font-mono text-xs text-slate-500">
-              Comentarios pendientes de activar: falta habilitar GitHub
-              Discussions en el repositorio y completar{" "}
-              <code className="text-acero-400">GISCUS_CATEGORY_ID</code> en{" "}
-              <code className="text-acero-400">components/Comentarios.jsx</code>.
-            </p>
-          )}
+          <div ref={contenedorRef} className="giscus" />
         </div>
       </div>
     </section>
