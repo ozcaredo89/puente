@@ -1,0 +1,1563 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1"><style>:root{color-scheme:light}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Puente Mariano Ospina Pérez</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Special+Elite&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#efe2bf;
+    --surface:#f7eeda;
+    --surface-2:#ddc793;
+    --line:#c9ad78;
+    --line-strong:#9c7d45;
+    --line-soft:rgba(139,109,63,.22);
+    --text:#33230f;
+    --text-dim:#5c4726;
+    --text-dimmer:#7d6640;
+    --text-faint:#9c8557;
+    --accent:#3d7a80;
+    --accent-strong:#1f4d52;
+    --accent-soft:rgba(61,122,128,.12);
+    --rust:#a8472b;
+    --gold:#8a621f;
+    --font-display:'Inter',system-ui,-apple-system,sans-serif;
+    --font-mono:'JetBrains Mono',ui-monospace,'SFMono-Regular',monospace;
+    --font-stamp:'Special Elite','JetBrains Mono',monospace;
+    --radius:10px;
+    --sheet-max:1120px;
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  @media (prefers-reduced-motion:reduce){ html{scroll-behavior:auto;} }
+
+  body{
+    background:
+      radial-gradient(ellipse 900px 500px at 8% 0%, rgba(156,125,69,.16), transparent 60%),
+      radial-gradient(ellipse 700px 500px at 96% 30%, rgba(156,125,69,.14), transparent 55%),
+      radial-gradient(ellipse 800px 600px at 12% 92%, rgba(156,125,69,.13), transparent 60%),
+      var(--bg);
+    color:var(--text);
+    font-family:var(--font-display);
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+    padding:0;
+  }
+
+  h1,h2,h3,h4{ text-wrap:balance; margin:0; font-weight:700; letter-spacing:-0.01em; }
+  p{ margin:0; }
+  a{ color:inherit; }
+  button{ font-family:inherit; cursor:pointer; }
+  ::selection{ background:rgba(61,122,128,.3); color:#fff; }
+
+  .wrap{ max-width:var(--sheet-max); margin:0 auto; padding-inline:24px; }
+  .mono{ font-family:var(--font-mono); }
+
+  /* ---------- Nav ---------- */
+  .nav{
+    position:fixed; inset:0 0 auto 0; z-index:50; height:64px;
+    background:rgba(239,226,191,.9); backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+    display:flex; align-items:center;
+  }
+  .nav .wrap{ width:100%; display:flex; align-items:center; justify-content:space-between; gap:16px; }
+  .brand{ display:flex; align-items:center; gap:8px; font-weight:700; font-size:15px; text-decoration:none; }
+  .brand svg{ width:20px; height:20px; color:var(--accent); flex-shrink:0; }
+  .nav-links{ display:flex; align-items:center; gap:28px; font-size:14px; color:var(--text-dim); list-style:none; margin:0; padding:0; }
+  .nav-links a{ text-decoration:none; transition:color .15s; }
+  .nav-links a:hover{ color:var(--accent-strong); }
+  .nav-toggle{ display:none; background:none; border:none; color:var(--text); font-size:20px; padding:4px; }
+  .nav-links.support a{ color:var(--gold); }
+
+  @media (max-width:820px){
+    .nav-links{ display:none; }
+    .nav-toggle{ display:block; }
+    .nav-links.open{
+      display:flex; flex-direction:column; align-items:flex-start; gap:0;
+      position:absolute; top:64px; left:0; right:0; background:var(--bg);
+      border-bottom:1px solid var(--line); padding:8px 24px 16px;
+    }
+    .nav-links.open a{ padding:10px 0; width:100%; }
+  }
+
+  /* ---------- Crop marks (cartographic sheet corners) ---------- */
+  .sheet-frame{ position:relative; }
+  .crop-mark{ position:absolute; width:16px; height:16px; pointer-events:none; border-color:var(--accent-strong); opacity:.65; }
+  .crop-tl{ top:0; left:0; border-top:2px solid; border-left:2px solid; }
+  .crop-tr{ top:0; right:0; border-top:2px solid; border-right:2px solid; }
+  .crop-bl{ bottom:0; left:0; border-bottom:2px solid; border-left:2px solid; }
+  .crop-br{ bottom:0; right:0; border-bottom:2px solid; border-right:2px solid; }
+
+  /* ---------- Coord tags / badges ---------- */
+  .coord-tag{
+    display:inline-flex; align-items:center; gap:6px; border:1px solid var(--line);
+    background:rgba(92,71,38,.06); color:var(--accent-strong); font-size:10px;
+    padding:3px 8px; border-radius:3px; letter-spacing:.03em;
+  }
+  .coord-tag svg{ width:9px; height:9px; }
+  .tag-faint{
+    display:inline-flex; align-items:center; border:1px solid var(--line); background:rgba(92,71,38,.05);
+    color:var(--text-dimmer); font-size:10px; padding:3px 8px; border-radius:3px; letter-spacing:.03em;
+  }
+
+  /* ---------- Hero ---------- */
+  .hero{ position:relative; overflow:hidden; padding:120px 0 80px; }
+  .hero-bg-grid{
+    position:absolute; inset:0; opacity:.35; pointer-events:none;
+    background-image:linear-gradient(var(--line-soft) 1px,transparent 1px),linear-gradient(90deg,var(--line-soft) 1px,transparent 1px);
+    background-size:48px 48px;
+  }
+  .hero-contours{ position:absolute; inset:0; opacity:.28; pointer-events:none; color:var(--text-faint); }
+  .hero-fade{ position:absolute; inset:0; background:linear-gradient(to bottom,var(--bg),rgba(221,199,147,.45) 55%,var(--bg)); pointer-events:none; }
+  .hero-compass{ position:absolute; top:96px; right:24px; width:56px; height:56px; color:rgba(92,71,38,.5); }
+  @media (max-width:900px){ .hero-compass{ display:none; } }
+
+  .hero-grid{ position:relative; display:grid; grid-template-columns:1fr; gap:48px; }
+  @media (min-width:980px){ .hero-grid{ grid-template-columns:1fr 1fr; align-items:center; gap:56px; } }
+
+  .badge{
+    display:inline-flex; align-items:center; gap:8px; border:1px solid rgba(138,98,31,.45);
+    background:rgba(138,98,31,.09); color:var(--gold); font-family:var(--font-mono);
+    font-size:12px; padding:6px 12px; border-radius:999px; margin-bottom:22px;
+  }
+  .badge .dot{ width:6px; height:6px; border-radius:50%; background:var(--gold); }
+
+  h1.title{ font-family:var(--font-stamp); font-weight:400; font-size:clamp(2.1rem,4.6vw,3.2rem); line-height:1.15; letter-spacing:-0.01em; }
+  .subtitle{ margin-top:10px; font-size:clamp(1.05rem,2vw,1.25rem); color:var(--accent-strong); font-weight:600; }
+  .coord-row{ display:flex; flex-wrap:wrap; gap:8px; margin-top:14px; }
+
+  .lede{ margin-top:22px; max-width:60ch; color:var(--text-dim); font-size:16px; line-height:1.7; }
+  .lede strong{ color:var(--text); font-weight:700; }
+  .lede .hl{ color:var(--accent-strong); font-weight:700; }
+
+  .cta-row{ display:flex; flex-wrap:wrap; gap:12px; margin-top:30px; }
+  .btn{ display:inline-flex; align-items:center; gap:6px; border-radius:8px; padding:13px 22px; font-size:14px; font-weight:600; text-decoration:none; border:1px solid transparent; transition:filter .15s,border-color .15s; }
+  .btn-primary{ background:var(--accent-strong); color:var(--surface); }
+  .btn-primary:hover{ filter:brightness(1.15); }
+  .btn-ghost{ border-color:var(--line-soft); color:var(--accent-strong); }
+  .btn-ghost:hover{ border-color:var(--accent); }
+
+  .stat-row{ display:grid; grid-template-columns:repeat(3,auto); gap:28px; margin-top:44px; max-width:420px; }
+  .stat dt{ font-family:var(--font-mono); font-size:11px; text-transform:uppercase; letter-spacing:.06em; color:var(--text-faint); }
+  .stat dd{ margin:4px 0 0; font-size:1.6rem; font-weight:800; font-variant-numeric:tabular-nums; }
+
+  /* ---------- Viewer ---------- */
+  .viewer-shell{ position:relative; border-radius:14px; overflow:hidden; border:2px solid var(--line-strong,var(--line)); background:linear-gradient(to bottom,#ddc793,var(--bg)); box-shadow:0 2px 0 rgba(92,71,38,.15) inset; }
+  .viewer-canvas-box{ position:relative; height:420px; }
+  @media (min-width:640px){ .viewer-canvas-box{ height:480px; } }
+  .viewer-canvas-box canvas{ display:block; width:100%; height:100%; touch-action:none; cursor:grab; }
+  .viewer-canvas-box canvas:active{ cursor:grabbing; }
+
+  .viewer-north{ position:absolute; top:12px; right:12px; display:flex; flex-direction:column; align-items:center; gap:2px; color:rgba(51,35,15,.75); z-index:2; }
+  .viewer-north svg{ width:30px; height:30px; filter:drop-shadow(0 1px 1px rgba(255,255,255,.5)); }
+  .viewer-north span{ font-family:var(--font-mono); font-size:9px; }
+
+  .viewer-plate{
+    position:absolute; left:12px; top:12px; z-index:2; max-width:min(78%,300px);
+    background:rgba(247,238,218,.93); border:1px solid var(--line); border-radius:6px;
+    padding:9px 12px; box-shadow:0 4px 10px rgba(51,35,15,.18);
+  }
+  .viewer-plate .vp-title{ font-family:var(--font-stamp); font-size:14px; color:var(--text); line-height:1.2; }
+  .viewer-plate .vp-sub{ margin-top:3px; font-family:var(--font-mono); font-size:9.5px; letter-spacing:.03em; color:var(--accent-strong); text-transform:uppercase; }
+  @media (max-width:480px){
+    .viewer-plate{ max-width:68%; padding:7px 10px; }
+    .viewer-plate .vp-title{ font-size:12px; }
+    .viewer-plate .vp-sub{ font-size:8.5px; }
+  }
+
+  .viewer-controls{ position:absolute; left:12px; right:12px; bottom:12px; display:flex; flex-wrap:wrap; align-items:flex-end; justify-content:space-between; gap:10px; z-index:2; }
+  .toggle-group{ display:flex; gap:8px; flex-wrap:wrap; }
+  .toggle-btn{
+    font-family:var(--font-mono); font-size:11px; padding:7px 11px; border-radius:8px;
+    border:1px solid var(--line); background:rgba(247,238,218,.9); color:var(--text-dim);
+    transition:border-color .15s,color .15s,background .15s;
+  }
+  .toggle-btn.on{ border-color:var(--accent); background:rgba(61,122,128,.18); color:var(--accent-strong); }
+  .viewer-hint{ display:none; flex-direction:column; align-items:flex-end; gap:4px; color:rgba(51,35,15,.75); }
+  @media (min-width:640px){ .viewer-hint{ display:flex; } }
+  .viewer-hint .hint-text{ font-family:var(--font-mono); font-size:10px; }
+
+  .scale-bar{ display:inline-flex; flex-direction:column; align-items:flex-start; font-family:var(--font-mono); font-size:9px; }
+  .scale-bar .segs{ display:flex; }
+  .scale-bar .seg{ width:26px; height:6px; border-top:1px solid currentColor; border-bottom:1px solid currentColor; }
+  .scale-bar .seg:first-child{ border-left:1px solid currentColor; }
+  .scale-bar .seg:last-child{ border-right:1px solid currentColor; }
+  .scale-bar .seg.fill{ background:currentColor; opacity:.7; }
+  .scale-bar .nums{ display:flex; justify-content:space-between; width:104px; margin-top:2px; opacity:.75; }
+
+  .viewer-caption{ text-align:center; font-family:var(--font-mono); font-size:11px; color:var(--text-faint); margin-top:12px; padding:0 8px; }
+
+  /* ---------- Section shell ---------- */
+  .section{ position:relative; padding:88px 0; border-top:1px solid var(--line); }
+  .section.on-surface{ background:var(--surface); }
+  .eyebrow{ display:inline-flex; align-items:center; gap:7px; font-family:var(--font-mono); font-size:12px; text-transform:uppercase; letter-spacing:.08em; color:var(--accent); }
+  .eyebrow svg{ width:12px; height:12px; }
+  h2.section-title{ margin-top:10px; font-size:clamp(1.7rem,3.4vw,2.4rem); }
+  .section-desc{ margin-top:14px; max-width:66ch; color:var(--text-dim); font-size:15.5px; line-height:1.7; }
+
+  /* ---------- Datos técnicos grid ---------- */
+  .cards-grid{ margin-top:52px; display:grid; grid-template-columns:1fr; gap:18px; }
+  @media (min-width:640px){ .cards-grid{ grid-template-columns:1fr 1fr; } }
+  @media (min-width:980px){ .cards-grid{ grid-template-columns:1fr 1fr 1fr; } }
+
+  .data-card{ position:relative; border:1px dashed var(--line); border-radius:8px; background:var(--surface); padding:22px; transition:border-color .15s; }
+  .data-card:hover{ border-color:rgba(61,122,128,.55); }
+  .data-card-top{ display:flex; align-items:flex-start; justify-content:space-between; gap:10px; }
+  .icon-box{ width:42px; height:42px; border-radius:8px; background:var(--accent-soft); color:var(--accent-strong); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+  .icon-box svg{ width:22px; height:22px; }
+  .data-card .value{ font-family:var(--font-mono); font-size:1.4rem; font-weight:700; text-align:right; font-variant-numeric:tabular-nums; }
+  .data-card h3{ margin-top:18px; font-size:16px; }
+  .data-card p{ margin-top:8px; font-size:14px; line-height:1.65; color:var(--text-dim); }
+
+  /* ---------- Timeline ---------- */
+  .timeline{ margin-top:56px; position:relative; }
+  .timeline-line{ position:absolute; left:27px; top:8px; bottom:8px; border-left:2px dashed rgba(61,122,128,.5); }
+  .phase{ position:relative; padding-left:80px; padding-bottom:52px; }
+  .phase:last-child{ padding-bottom:0; }
+  .phase-num{
+    position:absolute; left:0; top:0; width:56px; height:56px; border-radius:50%;
+    border:2px solid var(--accent); background:var(--bg); display:flex; align-items:center; justify-content:center;
+    font-family:var(--font-mono); font-size:17px; font-weight:700; color:var(--accent-strong);
+  }
+  .phase-card{ border:1px solid var(--line); border-radius:12px; background:var(--surface); padding:22px 24px; }
+  .phase-head{ display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:8px; }
+  .phase-head h3{ font-size:17px; }
+  .phase-dur{ font-family:var(--font-mono); font-size:11px; color:var(--accent-strong); background:var(--accent-soft); padding:4px 10px; border-radius:999px; white-space:nowrap; }
+  .phase-desc{ margin-top:10px; font-size:14.5px; line-height:1.7; color:var(--text-dim); }
+  .phase-list{ margin-top:14px; display:grid; grid-template-columns:1fr; gap:6px; list-style:none; padding:0; }
+  @media (min-width:720px){ .phase-list{ grid-template-columns:1fr 1fr 1fr; } }
+  .phase-list li{ display:flex; gap:8px; font-size:12.5px; color:var(--text-dim); }
+  .phase-list li::before{ content:''; width:5px; height:5px; border-radius:50%; background:var(--accent); margin-top:6px; flex-shrink:0; }
+
+  /* ---------- Historia / archivo fotográfico ---------- */
+  .history-grid{ margin-top:36px; display:grid; grid-template-columns:1fr; gap:28px; align-items:start; }
+  @media (min-width:760px){ .history-grid{ grid-template-columns:320px 1fr; } }
+  .history-photo{ border:1px solid var(--line); border-radius:8px; background:var(--surface); padding:14px; }
+  .history-photo img{ width:100%; height:auto; display:block; border-radius:3px; filter:sepia(.18) contrast(1.02); }
+  .history-photo figcaption{ margin-top:10px; font-family:var(--font-mono); font-size:10.5px; line-height:1.6; color:var(--text-dimmer); }
+  .history-copy p{ font-size:14.5px; line-height:1.75; color:var(--text-dim); }
+  .history-copy p + p{ margin-top:12px; }
+  .history-source{ margin-top:16px; padding-top:12px; border-top:1px dashed var(--line); font-family:var(--font-mono); font-size:10.5px; line-height:1.7; color:var(--text-faint); }
+
+  /* ---------- Planos ---------- */
+  .plano-box{ margin-top:44px; position:relative; border:1px solid var(--line); border-radius:8px; background:var(--surface); padding:20px; }
+  @media (min-width:720px){ .plano-box{ padding:32px; } }
+  .plano-north{ position:absolute; top:14px; right:14px; display:flex; flex-direction:column; align-items:center; gap:2px; color:rgba(51,35,15,.7); z-index:2; }
+  .plano-north svg{ width:26px; height:26px; }
+  .plano-north span{ font-family:var(--font-mono); font-size:9px; }
+  .plano-box svg.diagram{ width:100%; height:auto; display:block; user-select:none; }
+  .titleblock{ margin-top:16px; padding-top:12px; border-top:1px dashed var(--line); display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:14px; font-family:var(--font-mono); font-size:10px; color:var(--text-dimmer); }
+
+  .plano-controls{ margin-top:22px; display:grid; grid-template-columns:1fr; gap:14px; }
+  @media (min-width:820px){ .plano-controls{ grid-template-columns:1fr 1.4fr; } }
+  .elem-btns{ display:flex; flex-wrap:wrap; gap:8px; align-content:flex-start; }
+  .elem-btn{ font-family:var(--font-mono); font-size:12px; padding:7px 13px; border-radius:999px; border:1px solid var(--line); background:transparent; color:var(--text-dim); transition:.15s; }
+  .elem-btn.active{ border-color:var(--accent); background:var(--accent-soft); color:var(--accent-strong); }
+  .legend-box{ border:1px dashed var(--line); border-radius:8px; background:var(--surface); padding:20px; min-height:100px; }
+  .legend-label{ display:block; margin-bottom:8px; font-family:var(--font-mono); font-size:10px; text-transform:uppercase; letter-spacing:.08em; color:var(--text-faint); }
+  .legend-type{ font-family:var(--font-mono); font-size:11px; text-transform:uppercase; letter-spacing:.05em; color:var(--accent); }
+  .legend-name{ margin-top:4px; font-weight:700; }
+  .legend-detail{ margin-top:6px; font-size:13.5px; color:var(--text-dim); line-height:1.6; }
+  .legend-empty{ font-size:13.5px; color:var(--text-dimmer); }
+
+  /* ---------- Normativa ---------- */
+  .norm-grid{ margin-top:44px; display:grid; grid-template-columns:1fr; gap:18px; }
+  @media (min-width:820px){ .norm-grid{ grid-template-columns:1fr 1fr 1fr; } }
+  .norm-card{ border:1px solid var(--line); border-radius:12px; background:var(--bg); padding:22px; }
+  .norm-card .k{ font-family:var(--font-mono); font-size:10px; text-transform:uppercase; letter-spacing:.06em; color:var(--text-faint); }
+  .norm-card .v{ margin-top:4px; font-size:1.25rem; font-weight:700; }
+  .norm-card .d{ margin-top:12px; font-size:13.5px; color:var(--text-dim); line-height:1.65; }
+  .norm-pills{ margin-top:22px; display:flex; flex-wrap:wrap; gap:10px; }
+  .norm-pill{ border:1px solid rgba(61,122,128,.45); background:var(--accent-soft); color:var(--accent-strong); font-family:var(--font-mono); font-size:11px; padding:7px 15px; border-radius:999px; }
+
+  .table-wrap{ margin-top:52px; overflow-x:auto; border:1px solid var(--line); border-radius:12px; }
+  table{ width:100%; min-width:740px; border-collapse:collapse; font-size:14px; }
+  thead tr{ background:var(--surface-2); text-align:left; }
+  th{ font-size:11px; text-transform:uppercase; letter-spacing:.06em; color:var(--accent-strong); padding:15px 18px; font-weight:600; }
+  td{ padding:15px 18px; vertical-align:top; }
+  tbody tr:nth-child(even){ background:rgba(92,71,38,.035); }
+  tbody tr:nth-child(odd){ background:rgba(92,71,38,.075); }
+  td.comp{ font-weight:600; white-space:nowrap; }
+  td.mat{ color:var(--accent-strong); white-space:nowrap; }
+  td.spec{ color:var(--text-dim); line-height:1.6; }
+  .table-note{ margin-top:14px; font-family:var(--font-mono); font-size:11px; color:var(--text-faint); }
+
+  /* ---------- Apoyo ---------- */
+  .support-box{ margin-top:48px; position:relative; border:1px dashed var(--line-strong); border-radius:10px; background:var(--surface); padding:26px; }
+  @media (min-width:720px){ .support-box{ padding:40px; } }
+  .support-grid{ display:grid; grid-template-columns:1fr; gap:30px; align-items:center; }
+  @media (min-width:720px){ .support-grid{ grid-template-columns:auto 1fr; } }
+  .qr-card{ margin:0 auto; background:#fff; border:1px solid var(--line); border-radius:10px; padding:12px; box-shadow:0 14px 30px -10px rgba(51,35,15,.35); width:180px; height:180px; }
+  @media (min-width:720px){ .qr-card{ margin:0; } }
+  .qr-card svg{ width:100%; height:100%; display:block; }
+  .qr-caption{ margin-top:10px; max-width:180px; text-align:center; font-size:11px; line-height:1.5; color:var(--text-faint); }
+  .support-copy{ text-align:center; }
+  @media (min-width:720px){ .support-copy{ text-align:left; } }
+  .support-eyebrow{ font-family:var(--font-mono); font-size:11px; text-transform:uppercase; letter-spacing:.06em; color:var(--accent); }
+  .support-number{ margin-top:8px; font-family:var(--font-mono); font-size:clamp(1.7rem,4vw,2.4rem); font-weight:700; letter-spacing:.02em; }
+  .support-sub{ margin-top:2px; font-size:14px; color:var(--text-dimmer); }
+  .copy-btn{ margin-top:18px; display:inline-flex; align-items:center; gap:8px; border:1px solid rgba(61,122,128,.5); border-radius:8px; padding:11px 20px; font-size:14px; font-weight:600; color:var(--accent-strong); background:transparent; transition:border-color .15s; }
+  .copy-btn:hover{ border-color:var(--accent); }
+  .copy-btn.copied{ border-color:#4b7a52; color:#345c3a; }
+  .support-fine{ margin-top:16px; font-size:12px; color:var(--text-faint); max-width:42ch; }
+  @media (min-width:720px){ .support-fine{ margin-inline:0; } }
+  @media (max-width:719px){ .support-fine{ margin-inline:auto; } }
+
+  /* ---------- Comentarios y calificaciones ---------- */
+  .rese-summary{ display:flex; align-items:center; gap:18px; }
+  .rese-avg{ font-family:var(--font-mono); font-size:2.4rem; font-weight:800; color:var(--text); line-height:1; }
+  .rese-stars{ font-size:18px; letter-spacing:2px; color:var(--line-strong); }
+  .rese-stars .on, .rese-star-ro.on{ color:var(--gold); }
+  .rese-count{ margin-top:4px; font-size:12.5px; color:var(--text-dimmer); }
+
+  .rese-auth{ margin-top:22px; padding-top:22px; border-top:1px dashed var(--line); }
+  .rese-google-btn{
+    display:inline-flex; align-items:center; gap:10px; border:1px solid var(--line);
+    background:var(--bg); color:var(--text); font-size:14px; font-weight:600;
+    padding:11px 18px; border-radius:8px; transition:border-color .15s,background .15s;
+  }
+  .rese-google-btn:hover{ border-color:var(--accent); background:var(--surface); }
+  .rese-google-btn:disabled{ opacity:.6; cursor:default; }
+
+  .rese-user{ display:flex; align-items:center; gap:10px; font-size:14px; color:var(--text-dim); }
+  .rese-avatar{ width:32px; height:32px; border-radius:50%; background:var(--surface-2); flex-shrink:0; object-fit:cover; }
+  .rese-signout{ margin-left:auto; font-family:var(--font-mono); font-size:11px; color:var(--text-faint); background:none; border:none; text-decoration:underline; }
+  .rese-signout:hover{ color:var(--accent-strong); }
+
+  .rese-form{ margin-top:16px; display:flex; flex-direction:column; gap:12px; align-items:flex-start; }
+  .rese-star-picker{ display:flex; gap:4px; }
+  .rese-star{
+    background:none; border:none; font-size:26px; line-height:1; color:var(--line-strong);
+    padding:2px; transition:color .1s, transform .1s;
+  }
+  .rese-star:hover{ transform:scale(1.12); }
+  .rese-star.on{ color:var(--gold); }
+  .rese-form textarea{
+    width:100%; resize:vertical; min-height:70px; border:1px solid var(--line); border-radius:8px;
+    background:var(--bg); color:var(--text); font:14px/1.6 var(--font-display); padding:12px 14px;
+  }
+  .rese-form textarea:focus{ outline:none; border-color:var(--accent); }
+
+  .rese-list{ list-style:none; margin:26px 0 0; padding:0; display:flex; flex-direction:column; gap:18px; }
+  .rese-item{ display:flex; gap:12px; padding-top:18px; border-top:1px solid var(--line-soft); }
+  .rese-list > .rese-item:first-child{ padding-top:0; border-top:none; }
+  .rese-item-body{ flex:1; min-width:0; }
+  .rese-item-head{ display:flex; flex-wrap:wrap; align-items:center; gap:8px; font-size:13.5px; }
+  .rese-item-stars{ font-size:13px; letter-spacing:1px; color:var(--line-strong); }
+  .rese-item-date{ font-family:var(--font-mono); font-size:10.5px; color:var(--text-faint); }
+  .rese-item-text{ margin-top:6px; font-size:14px; line-height:1.65; color:var(--text-dim); }
+  .rese-delete{ margin-top:6px; background:none; border:none; font-family:var(--font-mono); font-size:10.5px; color:var(--rust); text-decoration:underline; padding:0; }
+  .rese-empty{ margin-top:20px; font-size:13.5px; color:var(--text-dimmer); }
+
+  /* ---------- Footer ---------- */
+  footer{ border-top:1px solid var(--line); padding:48px 0; }
+  .footer-grid{ display:flex; flex-direction:column; gap:24px; }
+  @media (min-width:820px){ .footer-grid{ flex-direction:row; align-items:center; justify-content:space-between; } }
+  .footer-brand{ display:flex; gap:12px; align-items:flex-start; }
+  .footer-brand svg{ width:22px; height:22px; color:rgba(51,35,15,.5); margin-top:2px; flex-shrink:0; }
+  .footer-brand p.name{ font-weight:700; }
+  .footer-brand p.desc{ margin-top:6px; font-size:13.5px; color:var(--text-dimmer); max-width:44ch; line-height:1.6; }
+  .footer-coords{ margin-top:8px; font-family:var(--font-mono); font-size:10px; color:var(--text-faint); }
+  .footer-note{ font-family:var(--font-mono); font-size:11px; color:var(--text-faint); line-height:1.7; }
+</style>
+
+<nav class="nav">
+  <div class="wrap">
+    <a href="#inicio" class="brand">
+      <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="24" cy="24" r="21" opacity=".5"/><circle cx="24" cy="24" r="1.4" fill="currentColor" stroke="none"/><path d="M24 5 L29 24 L24 22 L19 24 Z" fill="currentColor" stroke="none"/><path d="M24 43 L29 24 L24 26 L19 24 Z" fill="currentColor" stroke="none" opacity=".35"/></svg>
+      Puente Mariano Ospina Pérez
+    </a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#visor">Modelo 3D</a></li>
+      <li><a href="#historia">Historia</a></li>
+      <li><a href="#antecedentes">Antecedentes</a></li>
+      <li><a href="#datos-tecnicos">Ficha técnica</a></li>
+      <li><a href="#fases">Fases</a></li>
+      <li><a href="#planos">Planos</a></li>
+      <li><a href="#normativa">Normativa</a></li>
+      <li><a href="#contribuir">Contribuir</a></li>
+      <li><a href="#comentarios">Comentarios</a></li>
+      <li class="support"><a href="#apoyo">Apoyar</a></li>
+    </ul>
+    <button class="nav-toggle" id="navToggle" aria-label="Abrir menú">☰</button>
+  </div>
+</nav>
+
+<section class="hero" id="inicio">
+  <div class="hero-bg-grid"></div>
+  <svg class="hero-contours" viewBox="0 0 400 200" preserveAspectRatio="none" style="position:absolute;inset:0;width:100%;height:100%;">
+    <path d="M -20 8 C 60 -14, 120 30, 200 8 S 340 -12, 420 8" fill="none" stroke="currentColor" stroke-width="1.1"/>
+    <path d="M -20 26 C 60 4, 120 48, 200 26 S 340 6, 420 26" fill="none" stroke="currentColor" stroke-width="0.6"/>
+    <path d="M -20 44 C 60 22, 120 66, 200 44 S 340 24, 420 44" fill="none" stroke="currentColor" stroke-width="0.6"/>
+    <path d="M -20 62 C 60 40, 120 84, 200 62 S 340 42, 420 62" fill="none" stroke="currentColor" stroke-width="1.1"/>
+    <path d="M -20 80 C 60 58, 120 102, 200 80 S 340 60, 420 80" fill="none" stroke="currentColor" stroke-width="0.6"/>
+    <path d="M -20 98 C 60 76, 120 120, 200 98 S 340 78, 420 98" fill="none" stroke="currentColor" stroke-width="0.6"/>
+    <path d="M -20 116 C 60 94, 120 138, 200 116 S 340 96, 420 116" fill="none" stroke="currentColor" stroke-width="1.1"/>
+  </svg>
+  <div class="hero-fade"></div>
+
+  <svg class="hero-compass" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.4">
+    <circle cx="24" cy="24" r="21" opacity=".5"/>
+    <path d="M24 5 L29 24 L24 22 L19 24 Z" fill="currentColor" stroke="none"/>
+    <path d="M24 43 L29 24 L24 26 L19 24 Z" fill="currentColor" stroke="none" opacity=".35"/>
+    <text x="24" y="14" text-anchor="middle" font-size="7" font-family="JetBrains Mono, monospace" fill="currentColor">N</text>
+  </svg>
+
+  <div class="wrap hero-grid">
+    <div>
+      <span class="badge"><span class="dot"></span>Proyecto de reconstrucción · Puente Esencial NSR-10</span>
+      <h1 class="title">Puente Mariano<br>Ospina Pérez</h1>
+      <p class="subtitle">Nueva conexión sobre el Río Cauca entre La Unión y La Victoria</p>
+
+      <div class="coord-row">
+        <span class="coord-tag"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C7.6 2 4 5.6 4 10c0 6 8 12 8 12s8-6 8-12c0-4.4-3.6-8-8-8zm0 11a3 3 0 110-6 3 3 0 010 6z"/></svg>La Unión 4°32′N 76°06′O</span>
+        <span class="coord-tag"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C7.6 2 4 5.6 4 10c0 6 8 12 8 12s8-6 8-12c0-4.4-3.6-8-8-8zm0 11a3 3 0 110-6 3 3 0 010 6z"/></svg>La Victoria 4°31′N 76°02′O</span>
+        <span class="tag-faint">Datum MAGNA-SIRGAS · Zona UTM 18N</span>
+        <span class="coord-tag">🍍 La Unión · Capital Frutícola de Colombia</span>
+      </div>
+
+      <p class="lede">
+        En 2026, el puente original que unía a estas dos comunidades del norte del Valle del Cauca
+        <strong>colapsó durante un sismo de alta intensidad</strong>, cortando el paso a ambulancias,
+        transporte escolar y a los camiones de carga de La Unión —la
+        <strong>Capital Frutícola de Colombia</strong>— y de los ingenios cañeros de la región. Este
+        proyecto reemplaza esa estructura por un puente diseñado para
+        <span class="hl">seguir en pie después del próximo gran sismo</span> y soportar el tránsito
+        pesado que sostiene la economía agrícola del norte del Valle.
+      </p>
+
+      <div class="cta-row">
+        <a href="#visor" class="btn btn-primary">Explorar el modelo 3D</a>
+        <a href="#datos-tecnicos" class="btn btn-ghost">Ver ficha técnica</a>
+      </div>
+
+      <dl class="stat-row">
+        <div class="stat"><dt>Luz libre</dt><dd>140 m</dd></div>
+        <div class="stat"><dt>Ancho</dt><dd>12 m</dd></div>
+        <div class="stat"><dt>Pilotes</dt><dd>35 m</dd></div>
+      </dl>
+    </div>
+
+    <div id="visor">
+      <div class="viewer-shell sheet-frame" id="viewerShell">
+        <div class="viewer-canvas-box" id="viewerCanvasBox">
+          <div id="viewerFallback" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;text-align:center;padding:24px;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--text-dimmer);">
+            Cargando visor 3D…
+          </div>
+        </div>
+
+        <div class="viewer-north">
+          <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.4">
+            <circle cx="24" cy="24" r="21" opacity=".5"/>
+            <path d="M24 5 L29 24 L24 22 L19 24 Z" fill="currentColor" stroke="none"/>
+            <path d="M24 43 L29 24 L24 26 L19 24 Z" fill="currentColor" stroke="none" opacity=".35"/>
+          </svg>
+          <span>N</span>
+        </div>
+
+        <div class="viewer-plate">
+          <div class="vp-title">Puente Mariano Ospina Pérez</div>
+          <div class="vp-sub">Río Cauca · La Unión ⇄ La Victoria</div>
+        </div>
+
+        <div class="viewer-controls">
+          <div class="toggle-group">
+            <button class="toggle-btn on" id="btnRotate" type="button">⏸ Pausar rotación</button>
+            <button class="toggle-btn on" id="btnLabels" type="button">🏷 Etiquetas</button>
+            <button class="toggle-btn on" id="btnWater" type="button">🌊 Nivel del río</button>
+          </div>
+          <div class="viewer-hint">
+            <div class="scale-bar">
+              <div class="segs">
+                <div class="seg fill"></div><div class="seg"></div><div class="seg fill"></div><div class="seg"></div>
+              </div>
+              <div class="nums"><span>0</span><span>70 m</span><span>140 m</span></div>
+            </div>
+            <span class="hint-text">arrastra para girar · scroll para zoom</span>
+          </div>
+        </div>
+      </div>
+      <p class="viewer-caption">Modelo paramétrico de referencia — el modelo final se producirá en Blender/FreeCAD y se exportará en formato .GLTF</p>
+    </div>
+  </div>
+</section>
+
+<section class="section on-surface" id="historia">
+  <div class="wrap" style="max-width:1040px;">
+    <span class="eyebrow"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor"><circle cx="8" cy="8" r="6.5"/><path d="M8 0v4M8 12v4M0 8h4M12 8h4"/></svg>Memoria fotográfica</span>
+    <h2 class="section-title">Un cruce con historia</h2>
+    <p class="section-desc">El punto de cruce entre La Unión y La Victoria no es nuevo: la comunidad ha construido puentes sobre el río Cauca en este mismo lugar desde hace décadas. Esta fotografía de archivo documenta una de esas construcciones anteriores.</p>
+
+    <div class="history-grid">
+      <figure class="history-photo sheet-frame">
+        <img src="public/img/puente-historico-1.jpg" alt="Fotografía de archivo en blanco y negro de la construcción de un puente anterior sobre el río Cauca entre La Unión y La Victoria" loading="lazy">
+        <figcaption>Construcción del puente que comunica La Unión con La Victoria. La Unión, fecha por identificar.</figcaption>
+      </figure>
+      <div class="history-copy">
+        <p>Esta imagen forma parte del <strong>Archivo del Patrimonio Fotográfico y Fílmico del Valle del Cauca</strong>, custodiado por la Biblioteca Departamental del Valle "Jorge Garcés Borrero" mediante convenio con la Secretaría de Cultura Departamental. El archivo reúne el registro visual de obras, paisajes y vida cotidiana del departamento, y se conserva para su consulta permanente por parte de estudiantes e investigadores.</p>
+        <p>La Universidad Icesi colabora en la difusión del archivo, facilitando la tecnología que permite la consulta digital de las imágenes. Compartirla aquí conecta el proyecto actual del puente Mariano Ospina Pérez con la larga historia de este cruce sobre el río Cauca.</p>
+        <div class="history-source">Fuente: Archivo del Patrimonio Fotográfico y Fílmico del Valle del Cauca · Biblioteca Departamental del Valle "Jorge Garcés Borrero" · Secretaría de Cultura Departamental · Universidad Icesi (audiovisuales.icesi.edu.co)</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section on-surface" id="antecedentes">
+  <div class="wrap" style="max-width:1080px;">
+    <span class="eyebrow"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor"><circle cx="8" cy="8" r="6.5"/><path d="M8 0v4M8 12v4M0 8h4M12 8h4"/></svg>Antecedentes</span>
+    <h2 class="section-title">El puente original: qué existía antes del colapso</h2>
+    <p class="section-desc">Datos reales de la estructura que este proyecto reemplaza, tomados de un reportaje técnico publicado de forma independiente sobre el Puente La Victoria (Río Cauca, La Unión – La Victoria, Valle del Cauca). Se incluyen aquí para que el diseño de la reconstrucción parta de una base fiel a lo que realmente existía, no de supuestos. Cifras sujetas a verificación con fuentes oficiales (INVÍAS / gobernación del Valle del Cauca).</p>
+
+    <div class="norm-grid">
+      <div class="norm-card"><div class="k">Tipología</div><div class="v">Puente colgante</div><div class="d">Superestructura suspendida de cables anclados a macizos (muertos) detrás de cada estribo, con dos torres metálicas de aprox. 21,5 m de altura. Sin pilas en el lecho del río.</div></div>
+      <div class="norm-card"><div class="k">Luces</div><div class="v">164 m + 2 × 54 m</div><div class="d">Luz principal colgante de 164 m entre torres, más dos tramos de aproximación de 54 m cada uno, apoyados sobre los estribos. Ancho de calzada de 6 m.</div></div>
+      <div class="norm-card"><div class="k">Antigüedad y refuerzo</div><div class="v">+60 años de servicio</div><div class="d">Estructura con más de 60 años en operación al momento del reportaje. Fue repotenciada en 2004 (DICON Ltda.) para aumentar su capacidad de carga ante el crecimiento del tráfico pesado agrícola de la zona.</div></div>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Elemento</th><th>Valor / dato</th><th>Detalle</th></tr></thead>
+        <tbody>
+          <tr><td class="comp">Torres metálicas</td><td class="mat">≈ 21,5 m de altura</td><td class="spec">Soportan los 6 cables portantes que sostienen la luz principal a través de 21 péndolas.</td></tr>
+          <tr><td class="comp">Péndolas</td><td class="mat">21 unidades</td><td class="spec">Distancias variables entre 7,4 m y 8 m, transmiten la carga del tablero a los cables portantes.</td></tr>
+          <tr><td class="comp">Vigas de rigidez</td><td class="mat">2,5 m (colgante) / 2,4 m (aproches)</td><td class="spec">Vigas de rigidez longitudinales, de mayor altura en el tramo colgante que en los tramos de aproximación.</td></tr>
+          <tr><td class="comp">Cables portantes</td><td class="mat">6 cables</td><td class="spec">Anclados al macizo o muerto ubicado atrás de cada estribo.</td></tr>
+          <tr><td class="comp">Carga de diseño original</td><td class="mat">Camión HS-20-44 (40 t)</td><td class="spec">Peso bruto vehicular con el que se concibió inicialmente el puente.</td></tr>
+          <tr><td class="comp">Repotenciación (2004)</td><td class="mat">Camión C-40-95 (52 t)</td><td class="spec">Ejecutada por DICON Ltda. Materiales: remaches A-502 grado 1, tornillos A-325, láminas y perfiles A-36, soldadura E70XX. Incluyó limpieza con chorro de arena y aplicación de pintura anticorrosiva y de acabado.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="table-note">Fuente: reportaje técnico "Puente La Victoria" (revista de divulgación técnica sobre puentes, vía issuu/legissa). Estos datos describen la estructura previa al colapso; no corresponden al diseño del puente nuevo, que se documenta en la ficha técnica siguiente.</p>
+
+    <div class="norm-pills">
+      <span class="norm-pill">Puente colgante</span>
+      <span class="norm-pill">Sin pilas en el lecho del río</span>
+      <span class="norm-pill">Repotenciación 2004 · DICON Ltda.</span>
+      <span class="norm-pill">Camión de diseño C-40-95 (52 t)</span>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="datos-tecnicos">
+  <div class="wrap">
+    <span class="eyebrow"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor"><circle cx="8" cy="8" r="6.5"/><path d="M8 0v4M8 12v4M0 8h4M12 8h4"/></svg>Ficha técnica</span>
+    <h2 class="section-title">Datos técnicos del proyecto</h2>
+    <p class="section-desc">Parámetros de diseño que definen la geometría, los materiales y el comportamiento sísmico del nuevo puente. Cada cifra responde a una condición real del sitio: el lecho aluvial del río Cauca y la amenaza sísmica alta del Valle del Cauca.</p>
+
+    <div class="cards-grid" id="cardsGrid"></div>
+  </div>
+</section>
+
+<section class="section on-surface" id="fases">
+  <div class="wrap" style="max-width:920px;">
+    <span class="eyebrow"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor"><circle cx="8" cy="8" r="6.5"/><path d="M8 0v4M8 12v4M0 8h4M12 8h4"/></svg>Cronograma constructivo</span>
+    <h2 class="section-title">Fases de construcción</h2>
+    <p class="section-desc">Cuatro fases secuenciales, desde la atención de emergencia hasta la entrega del puente definitivo. El pilotaje profundo (Fase 2) es la actividad crítica: allí se instalan las verdaderas zapatas del puente, a 35 metros bajo el lecho del río.</p>
+
+    <div class="timeline" id="timeline"><div class="timeline-line"></div></div>
+  </div>
+</section>
+
+<section class="section" id="planos">
+  <div class="wrap" style="max-width:1040px;">
+    <span class="eyebrow"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor"><circle cx="8" cy="8" r="6.5"/><path d="M8 0v4M8 12v4M0 8h4M12 8h4"/></svg>Planos de diseño</span>
+    <h2 class="section-title">Perfil longitudinal sobre el río Cauca</h2>
+    <p class="section-desc">Corte esquemático del puente y su cimentación. Haz clic sobre un elemento (estribos, arco, péndolas, tablero) para ver su detalle técnico. El plano es paramétrico: las cotas provienen de las mismas cifras de diseño mostradas en la ficha técnica.</p>
+
+    <div class="plano-box sheet-frame" id="planoBox">
+      <div class="plano-north">
+        <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.4">
+          <circle cx="24" cy="24" r="21" opacity=".5"/>
+          <path d="M24 5 L29 24 L24 22 L19 24 Z" fill="currentColor" stroke="none"/>
+          <path d="M24 43 L29 24 L24 26 L19 24 Z" fill="currentColor" stroke="none" opacity=".35"/>
+        </svg>
+        <span>N</span>
+      </div>
+      <div id="planoSvgHolder"></div>
+      <div class="titleblock">
+        <span>PLANO · PERFIL LONGITUDINAL</span>
+        <span>DATUM MAGNA-SIRGAS · UTM 18N</span>
+        <div class="scale-bar">
+          <div class="segs"><div class="seg fill"></div><div class="seg"></div><div class="seg fill"></div><div class="seg"></div></div>
+          <div class="nums"><span>0</span><span>70 m</span><span>140 m</span></div>
+        </div>
+        <span>HOJA 1/1 · ESC. GRÁF.</span>
+      </div>
+    </div>
+
+    <div class="plano-controls">
+      <div class="elem-btns" id="elemBtns"></div>
+      <div class="legend-box">
+        <span class="legend-label">Leyenda</span>
+        <div id="legendContent"><p class="legend-empty">Selecciona un elemento del plano o de la lista para ver su detalle técnico.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section on-surface" id="normativa">
+  <div class="wrap" style="max-width:1080px;">
+    <span class="eyebrow"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor"><circle cx="8" cy="8" r="6.5"/><path d="M8 0v4M8 12v4M0 8h4M12 8h4"/></svg>Marco normativo y materiales</span>
+    <h2 class="section-title">Cumplimiento normativo, no capricho estético</h2>
+    <p class="section-desc">El diseño se rige por el Código Colombiano de Diseño de Puentes (CCP-14), complementado por la NSR-10 en geotecnia y materiales. Cada especificación responde a una exigencia legal para estructuras esenciales en zona de amenaza sísmica alta.</p>
+
+    <div class="norm-grid">
+      <div class="norm-card"><div class="k">Categoría de importancia</div><div class="v">Puente Esencial</div><div class="d">Por clasificación legal debe mantener su integridad estructural para garantizar el paso de ambulancias, bomberos y logística de emergencia inmediatamente después de un sismo severo.</div></div>
+      <div class="norm-card"><div class="k">Amenaza sísmica</div><div class="v">Zona Alta</div><div class="d">Zona de Amenaza Sísmica Alta (Valle del Cauca). Exige disipación de energía mediante aislamiento sísmico de base.</div></div>
+      <div class="norm-card"><div class="k">Riesgo geotécnico</div><div class="v">Licuación</div><div class="d">El lecho del río Cauca contiene suelos aluviales arenosos y limosos con alto riesgo de licuación: el suelo pierde firmeza y se comporta como líquido durante el sismo. Esto prohíbe zapatas superficiales y exige pilotaje profundo hasta estratos rocosos.</div></div>
+    </div>
+
+    <div class="norm-pills">
+      <span class="norm-pill">CCP-14 (Código Colombiano de Diseño de Puentes)</span>
+      <span class="norm-pill">NSR-10, Título H (Geotecnia)</span>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Componente</th><th>Material requerido</th><th>Especificación técnica</th></tr></thead>
+        <tbody id="specTableBody"></tbody>
+      </table>
+    </div>
+    <p class="table-note">fy = límite de fluencia · f'c = resistencia a compresión del concreto · MPa = megapascales</p>
+  </div>
+</section>
+
+<section class="section on-surface" id="contribuir">
+  <div class="wrap" style="max-width:900px;">
+    <span class="eyebrow"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor"><circle cx="8" cy="8" r="6.5"/><path d="M8 0v4M8 12v4M0 8h4M12 8h4"/></svg>Código abierto</span>
+    <h2 class="section-title">¿Quieres colaborar con el diseño?</h2>
+    <p class="section-desc">El código fuente de este sitio (visor 3D, planos paramétricos, ficha técnica) es abierto. Si eres desarrollador, ingeniero o diseñador y quieres proponer mejoras, corregir datos o ampliar el visor, puedes hacerlo mediante un Pull Request en el repositorio del proyecto.</p>
+
+    <div class="support-box sheet-frame" style="margin-top:32px;">
+      <div style="display:flex;flex-wrap:wrap;gap:20px;align-items:center;justify-content:space-between;">
+        <div style="max-width:52ch;">
+          <div class="support-eyebrow">Repositorio en GitHub</div>
+          <p style="margin-top:8px;font-size:14.5px;color:var(--text-dim);line-height:1.65;">Encontrarás la guía de contribución (<code class="mono">CONTRIBUTING.md</code>) con el paso a paso: cómo hacer fork, correr el proyecto localmente y enviar tu Pull Request.</p>
+        </div>
+        <a href="https://github.com/ozcaredo89/puente" target="_blank" rel="noopener" class="btn btn-primary">
+          <svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8a8 8 0 0 0 5.47 7.59c.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.5 7.5 0 0 1 4 0c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8 8 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>
+          Ver repositorio en GitHub
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="apoyo">
+  <div class="wrap" style="max-width:900px;">
+    <span class="eyebrow"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor"><circle cx="8" cy="8" r="6.5"/><path d="M8 0v4M8 12v4M0 8h4M12 8h4"/></svg>Punto de apoyo</span>
+    <h2 class="section-title">¿Te sirvió esta documentación técnica?</h2>
+    <p class="section-desc">Este sitio es un ejercicio independiente de divulgación técnica y comunitaria sobre la reconstrucción del puente: no es un canal oficial de recaudo para la obra ni reemplaza el presupuesto público del proyecto. Si te resultó útil y quieres invitar un café a quien lo construyó, puedes hacerlo voluntariamente por Nequi.</p>
+
+    <div class="support-box sheet-frame">
+      <div class="support-grid">
+        <div>
+          <div class="qr-card">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 23 23" shape-rendering="crispEdges" role="img" aria-label="Código QR con el número Nequi 3113738912"><path fill="#ffffff" d="M0 0h23v23H0z"/><path stroke="#0a1220" d="M1 1.5h7m2 0h1m4 0h7M1 2.5h1m5 0h1m1 0h1m2 0h2m1 0h1m5 0h1M1 3.5h1m1 0h3m1 0h1m2 0h1m1 0h1m2 0h1m1 0h3m1 0h1M1 4.5h1m1 0h3m1 0h1m3 0h3m1 0h1m1 0h3m1 0h1M1 5.5h1m1 0h3m1 0h1m1 0h2m2 0h1m1 0h1m1 0h3m1 0h1M1 6.5h1m5 0h1m2 0h2m1 0h1m1 0h1m5 0h1M1 7.5h7m1 0h1m1 0h1m1 0h1m1 0h7M10 8.5h1m1 0h2M1 9.5h1m1 0h1m1 0h1m1 0h1m3 0h2m4 0h1m2 0h1M2 10.5h4m2 0h1m1 0h2m3 0h1m5 0h1M1 11.5h1m2 0h4m1 0h3m1 0h1m3 0h5M1 12.5h1m1 0h1m1 0h2m1 0h2m5 0h1m3 0h1m1 0h1M1 13.5h2m1 0h1m1 0h2m1 0h1m1 0h1m1 0h1m1 0h1m1 0h3m1 0h1M9 14.5h1m2 0h1m1 0h1m1 0h1M1 15.5h7m2 0h3m1 0h3m1 0h1M1 16.5h1m5 0h1m2 0h1m1 0h3m1 0h2m2 0h2M1 17.5h1m1 0h3m1 0h1m1 0h4m1 0h3m1 0h1m2 0h1M1 18.5h1m1 0h3m1 0h1m2 0h1m4 0h2m1 0h3M1 19.5h1m1 0h3m1 0h1m1 0h1m1 0h1m1 0h1m3 0h2m2 0h1M1 20.5h1m5 0h1m3 0h1m3 0h2m1 0h1M1 21.5h7m1 0h1m3 0h1m1 0h1m1 0h1m3 0h1"/></svg>
+          </div>
+          <p class="qr-caption">Oscar Eduardo Hincapié Vargas<br>Ing. de Sistemas (Ateño)<br>Hijo de Olga María Hincapié, Alba Cecilia Hincapié y Héctor Favio Valenzuela</p>
+        </div>
+        <div class="support-copy">
+          <div class="support-eyebrow">Escanea o copia el número</div>
+          <div class="support-number mono">3113738912</div>
+          <div class="support-sub">Nequi · Colombia</div>
+          <button class="copy-btn" id="copyBtn" type="button">Copiar número</button>
+          <p class="support-fine">Aporte 100% voluntario y anónimo para el autor de este sitio. No constituye pago, contribución oficial ni compromiso alguno relacionado con la construcción del puente.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section on-surface" id="comentarios">
+  <div class="wrap" style="max-width:900px;">
+    <span class="eyebrow"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor"><circle cx="8" cy="8" r="6.5"/><path d="M8 0v4M8 12v4M0 8h4M12 8h4"/></svg>Participación</span>
+    <h2 class="section-title">Comentarios y calificaciones</h2>
+    <p class="section-desc">¿Tienes preguntas, observaciones o información adicional sobre el proyecto? Califica el sitio y deja tu comentario. Inicia sesión con tu cuenta de <strong>Google</strong> — no se requiere cuenta de GitHub ni ninguna otra.</p>
+
+    <div class="support-box sheet-frame rese-box" style="margin-top:32px;">
+      <div class="rese-summary">
+        <div class="rese-avg" id="reseAvgNum">—</div>
+        <div>
+          <div class="rese-stars" id="reseAvgStars" aria-hidden="true"></div>
+          <div class="rese-count" id="reseCount">Cargando…</div>
+        </div>
+      </div>
+
+      <div class="rese-auth" id="reseAuthLoggedOut">
+        <button class="rese-google-btn" id="reseSignIn" type="button">
+          <svg viewBox="0 0 18 18" width="18" height="18" aria-hidden="true"><path fill="#4285F4" d="M17.64 9.2c0-.64-.06-1.25-.16-1.84H9v3.48h4.84a4.14 4.14 0 01-1.8 2.72v2.26h2.9c1.7-1.57 2.7-3.88 2.7-6.62z"/><path fill="#34A853" d="M9 18c2.43 0 4.47-.8 5.96-2.18l-2.9-2.26c-.8.54-1.84.86-3.06.86-2.35 0-4.34-1.59-5.05-3.72H.96v2.33A9 9 0 009 18z"/><path fill="#FBBC05" d="M3.95 10.7A5.4 5.4 0 013.68 9c0-.59.1-1.17.27-1.7V4.97H.96A9 9 0 000 9c0 1.45.35 2.83.96 4.03l2.99-2.33z"/><path fill="#EA4335" d="M9 3.58c1.32 0 2.51.45 3.44 1.35l2.58-2.58C13.46.89 11.43 0 9 0A9 9 0 00.96 4.97L3.95 7.3C4.66 5.17 6.65 3.58 9 3.58z"/></svg>
+          Iniciar sesión con Google para comentar
+        </button>
+      </div>
+
+      <div class="rese-auth" id="reseAuthLoggedIn" hidden>
+        <div class="rese-user">
+          <img id="reseUserPhoto" class="rese-avatar" src="" alt="">
+          <span id="reseUserName"></span>
+          <button class="rese-signout" id="reseSignOut" type="button">Cerrar sesión</button>
+        </div>
+        <form id="reseForm" class="rese-form">
+          <div class="rese-star-picker" id="reseStarPicker" role="radiogroup" aria-label="Tu calificación">
+            <button type="button" class="rese-star" data-val="1" aria-label="1 estrella">★</button>
+            <button type="button" class="rese-star" data-val="2" aria-label="2 estrellas">★</button>
+            <button type="button" class="rese-star" data-val="3" aria-label="3 estrellas">★</button>
+            <button type="button" class="rese-star" data-val="4" aria-label="4 estrellas">★</button>
+            <button type="button" class="rese-star" data-val="5" aria-label="5 estrellas">★</button>
+          </div>
+          <textarea id="reseTexto" maxlength="1000" rows="3" placeholder="Escribe tu comentario (opcional)"></textarea>
+          <button type="submit" class="btn btn-primary" id="reseSubmit">Publicar reseña</button>
+        </form>
+      </div>
+
+      <ul class="rese-list" id="reseList"></ul>
+      <p class="rese-empty" id="reseEmptyMsg" hidden>Aún no hay comentarios. ¡Sé el primero en escribir uno!</p>
+    </div>
+  </div>
+</section>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
+  import {
+    getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged
+  } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
+  import {
+    getFirestore, collection, addDoc, deleteDoc, doc,
+    onSnapshot, query, orderBy, serverTimestamp
+  } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+
+  // Configuración del proyecto de Firebase (Authentication + Firestore).
+  // Ver la sección "Activar los comentarios" del README para los pasos de
+  // creación del proyecto y estas credenciales (son públicas por diseño en
+  // apps de Firebase: la seguridad real la dan las Firestore Security Rules).
+  var firebaseConfig = {
+    apiKey: "AIzaSyBumE8aQp8UUII52aHQD2WbD6O4WwrKDTc",
+    authDomain: "puente-mariano-ospina.firebaseapp.com",
+    projectId: "puente-mariano-ospina",
+    storageBucket: "puente-mariano-ospina.firebasestorage.app",
+    messagingSenderId: "334959843348",
+    appId: "1:334959843348:web:cedae942e6ef5c0d6b6f01"
+  };
+
+  var reseBox = document.querySelector('#comentarios .rese-box');
+
+  if (firebaseConfig.apiKey.indexOf('TODO') === 0) {
+    reseBox.innerHTML =
+      '<p class="rese-empty">Comentarios pendientes de activar: falta configurar Firebase en <code class="mono">index.html</code> (ver README).</p>';
+  } else {
+    var app = initializeApp(firebaseConfig);
+    var auth = getAuth(app);
+    var db = getFirestore(app);
+    var provider = new GoogleAuthProvider();
+
+    var elSignIn = document.getElementById('reseSignIn');
+    var elSignOut = document.getElementById('reseSignOut');
+    var elLoggedOut = document.getElementById('reseAuthLoggedOut');
+    var elLoggedIn = document.getElementById('reseAuthLoggedIn');
+    var elUserPhoto = document.getElementById('reseUserPhoto');
+    var elUserName = document.getElementById('reseUserName');
+    var elForm = document.getElementById('reseForm');
+    var elTexto = document.getElementById('reseTexto');
+    var elSubmit = document.getElementById('reseSubmit');
+    var elStars = Array.prototype.slice.call(document.querySelectorAll('#reseStarPicker .rese-star'));
+    var elList = document.getElementById('reseList');
+    var elEmpty = document.getElementById('reseEmptyMsg');
+    var elAvgNum = document.getElementById('reseAvgNum');
+    var elAvgStars = document.getElementById('reseAvgStars');
+    var elCount = document.getElementById('reseCount');
+
+    var ratingSel = 0;
+    function renderStarPicker(){
+      elStars.forEach(function(btn){
+        var v = parseInt(btn.dataset.val, 10);
+        btn.classList.toggle('on', v <= ratingSel);
+        btn.setAttribute('aria-checked', v === ratingSel ? 'true' : 'false');
+      });
+    }
+    elStars.forEach(function(btn){
+      btn.addEventListener('click', function(){
+        ratingSel = parseInt(btn.dataset.val, 10);
+        renderStarPicker();
+      });
+    });
+
+    elSignIn.addEventListener('click', function(){
+      elSignIn.disabled = true;
+      signInWithPopup(auth, provider).catch(function(err){
+        console.error('Error de inicio de sesión con Google', err);
+      }).finally(function(){ elSignIn.disabled = false; });
+    });
+    elSignOut.addEventListener('click', function(){ signOut(auth); });
+
+    onAuthStateChanged(auth, function(user){
+      if (user) {
+        elLoggedOut.hidden = true;
+        elLoggedIn.hidden = false;
+        elUserPhoto.src = user.photoURL || '';
+        elUserName.textContent = user.displayName || user.email || 'Usuario de Google';
+      } else {
+        elLoggedOut.hidden = false;
+        elLoggedIn.hidden = true;
+        ratingSel = 0; renderStarPicker();
+      }
+      renderList();
+    });
+
+    elForm.addEventListener('submit', function(e){
+      e.preventDefault();
+      var user = auth.currentUser;
+      if (!user) return;
+      if (ratingSel < 1) { elStars[0].focus(); return; }
+      var texto = elTexto.value.trim().slice(0, 1000);
+      elSubmit.disabled = true;
+      addDoc(collection(db, 'comentarios'), {
+        uid: user.uid,
+        name: user.displayName || 'Usuario de Google',
+        photoURL: user.photoURL || '',
+        rating: ratingSel,
+        text: texto,
+        createdAt: serverTimestamp()
+      }).then(function(){
+        elTexto.value = '';
+        ratingSel = 0; renderStarPicker();
+      }).catch(function(err){
+        console.error('No se pudo publicar el comentario', err);
+        alert('No se pudo publicar tu comentario. Intenta de nuevo.');
+      }).finally(function(){
+        elSubmit.disabled = false;
+      });
+    });
+
+    function starsHtml(n){
+      var out = '';
+      for (var i=1;i<=5;i++){ out += '<span class="rese-star-ro'+(i<=n?' on':'')+'">★</span>'; }
+      return out;
+    }
+    function fmtFecha(ts){
+      if (!ts || !ts.toDate) return '';
+      return ts.toDate().toLocaleDateString('es-CO', {year:'numeric', month:'short', day:'numeric'});
+    }
+    function escapeHtml(s){
+      return String(s).replace(/[&<>"']/g, function(c){
+        return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
+      });
+    }
+
+    var ultimosDocs = [];
+    function renderList(){
+      elList.innerHTML = '';
+      var total = ultimosDocs.length, suma = 0;
+      ultimosDocs.forEach(function(item){
+        var c = item.data;
+        suma += (c.rating || 0);
+        var esMio = auth.currentUser && auth.currentUser.uid === c.uid;
+        var li = document.createElement('li');
+        li.className = 'rese-item';
+        li.innerHTML =
+          '<img class="rese-avatar" src="'+escapeHtml(c.photoURL||'')+'" alt="" referrerpolicy="no-referrer">' +
+          '<div class="rese-item-body">' +
+            '<div class="rese-item-head"><strong>'+escapeHtml(c.name||'Usuario de Google')+'</strong>' +
+              '<span class="rese-item-stars">'+starsHtml(c.rating||0)+'</span>' +
+              '<span class="rese-item-date">'+fmtFecha(c.createdAt)+'</span></div>' +
+            (c.text ? '<p class="rese-item-text">'+escapeHtml(c.text)+'</p>' : '') +
+            (esMio ? '<button type="button" class="rese-delete" data-id="'+item.id+'">Eliminar</button>' : '') +
+          '</div>';
+        elList.appendChild(li);
+      });
+      elEmpty.hidden = total > 0;
+      if (total > 0) {
+        var avg = suma / total;
+        elAvgNum.textContent = avg.toFixed(1);
+        elAvgStars.innerHTML = starsHtml(Math.round(avg));
+        elCount.textContent = total + (total === 1 ? ' calificación' : ' calificaciones');
+      } else {
+        elAvgNum.textContent = '—';
+        elAvgStars.innerHTML = starsHtml(0);
+        elCount.textContent = 'Sé el primero en calificar';
+      }
+      elList.querySelectorAll('.rese-delete').forEach(function(btn){
+        btn.addEventListener('click', function(){
+          if (!confirm('¿Eliminar tu comentario?')) return;
+          deleteDoc(doc(db, 'comentarios', btn.dataset.id));
+        });
+      });
+    }
+
+    var q = query(collection(db, 'comentarios'), orderBy('createdAt', 'desc'));
+    onSnapshot(q, function(snap){
+      ultimosDocs = [];
+      snap.forEach(function(d){ ultimosDocs.push({id:d.id, data:d.data()}); });
+      renderList();
+    }, function(err){
+      console.error('No se pudieron cargar los comentarios', err);
+      elCount.textContent = 'No se pudieron cargar los comentarios.';
+    });
+  }
+</script>
+
+<footer>
+  <div class="wrap footer-grid">
+    <div class="footer-brand">
+      <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="24" cy="24" r="21" opacity=".5"/><path d="M24 5 L29 24 L24 22 L19 24 Z" fill="currentColor" stroke="none"/><path d="M24 43 L29 24 L24 26 L19 24 Z" fill="currentColor" stroke="none" opacity=".35"/></svg>
+      <div>
+        <p class="name">Puente Mariano Ospina Pérez</p>
+        <p class="desc">Límite entre los municipios de La Unión y La Victoria, Valle del Cauca, Colombia. Proyecto de reconstrucción diseñado bajo el CCP-14 y la NSR-10 como puente esencial de la red vial del norte del Valle del Cauca.</p>
+        <p class="footer-coords">4°32′N 76°06′O · 4°31′N 76°02′O · Datum MAGNA-SIRGAS · Zona UTM 18N</p>
+      </div>
+    </div>
+    <div class="footer-note">
+      <p>Maqueta interactiva de socialización técnica y comunitaria.</p>
+      <p>Cifras de diseño sujetas a validación en estudios de detalle.</p>
+      <p><a href="https://github.com/ozcaredo89/puente" target="_blank" rel="noopener" style="color:var(--accent-strong);text-decoration:underline;">Código fuente y guía de contribución en GitHub ↗</a></p>
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+(function(){
+  "use strict";
+  var reducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ---------------- Nav mobile toggle ---------------- */
+  var navToggle = document.getElementById('navToggle');
+  var navLinks = document.getElementById('navLinks');
+  navToggle.addEventListener('click', function(){
+    navLinks.classList.toggle('open');
+    navToggle.textContent = navLinks.classList.contains('open') ? '✕' : '☰';
+  });
+  navLinks.querySelectorAll('a').forEach(function(a){
+    a.addEventListener('click', function(){ navLinks.classList.remove('open'); navToggle.textContent='☰'; });
+  });
+
+  /* ---------------- Crop marks ---------------- */
+  document.querySelectorAll('.sheet-frame').forEach(function(el){
+    ['tl','tr','bl','br'].forEach(function(pos){
+      var d = document.createElement('div');
+      d.className = 'crop-mark crop-' + pos;
+      el.appendChild(d);
+    });
+  });
+
+  /* ---------------- Datos técnicos cards ---------------- */
+  var ICONS = {
+    span:'<path d="M2 17h20"/><path d="M2 17c3-6 6-9 10-9s7 3 10 9"/><path d="M2 17v3M22 17v3"/>',
+    width:'<path d="M3 12h18"/><path d="M3 12l4-4M3 12l4 4"/><path d="M21 12l-4-4M21 12l-4 4"/><rect x="6" y="7" width="12" height="10" rx="1" opacity="0.35"/>',
+    river:'<path d="M2 8c2-2 4-2 6 0s4 2 6 0 4-2 6 0"/><path d="M2 14c2-2 4-2 6 0s4 2 6 0 4-2 6 0"/><path d="M2 20c2-2 4-2 6 0s4 2 6 0 4-2 6 0"/>',
+    foundation:'<path d="M4 4h16"/><path d="M7 4v16M12 4v16M17 4v16"/>',
+    girder:'<rect x="2" y="6" width="20" height="5" rx="1"/><path d="M5 11v3M10 11v3M14 11v3M19 11v3"/><path d="M4 18h16"/>',
+    seismic:'<path d="M2 12h4l2-7 4 14 3-10 2 3h5"/><circle cx="18" cy="12" r="2.2" opacity="0.5"/>',
+    truck:'<path d="M2 16V7a1 1 0 011-1h9v10"/><path d="M12 10h5l4 3.5V16h-2"/><circle cx="7" cy="17.5" r="1.8"/><circle cx="17" cy="17.5" r="1.8"/><path d="M2 14h1"/>'
+  };
+  var DATOS = [
+    {v:'140 m', t:'Luz Libre del Puente', d:'Arco en acero estructural de 140 m entre estribos, sin ningún apoyo dentro del cauce: elimina las pilas en el río y el riesgo de socavación durante crecientes.', icon:'span'},
+    {v:'12 m', t:'Ancho de Tablero', d:'2 carriles vehiculares de 3.6 m, bermas de seguridad y 2 pasos peatonales segregados con barrera física del tráfico vehicular.', icon:'width'},
+    {v:'5 – 8 m', t:'Condiciones del Río Cauca', d:'Profundidad variable con lecho aluvial de arcillas y limos blandos, con alto riesgo de licuación ante sismo (Título H, NSR-10).', icon:'river'},
+    {v:'35 m', t:'Cimentación Profunda', d:'Pilotes excavados en concreto reforzado hasta encontrar roca firme o estrato duro, fundidos bajo agua mediante tubo Tremi.', icon:'foundation'},
+    {v:'Arco · Acero A709', t:'Superestructura', d:"Arco atirantado en acero estructural ASTM A709 Grado 50W (autopatinable), con tablero colgado del arco mediante péndolas. Un solo tramo de 140 m sin apoyos en el agua.", icon:'girder'},
+    {v:'Aisladores FPS', t:'Sismorresistencia', d:'Aisladores sísmicos de péndulo por fricción entre el tablero/arco y los estribos, cumpliendo NSR-10 y CCP-14 para puentes esenciales.', icon:'seismic'},
+    {v:'Camión HL-93', t:'Carga de Diseño Vehicular', d:'Modelo de camión de diseño HL-93 más carga de carril, adoptado por el CCP-14, para soportar el tránsito pesado de La Unión (Capital Frutícola de Colombia) y de los ingenios cañeros del Valle del Cauca.', icon:'truck'}
+  ];
+  var cardsGrid = document.getElementById('cardsGrid');
+  DATOS.forEach(function(c){
+    var el = document.createElement('article');
+    el.className = 'data-card';
+    el.innerHTML =
+      '<div class="data-card-top">' +
+        '<div class="icon-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">' + ICONS[c.icon] + '</svg></div>' +
+        '<span class="value">' + c.v + '</span>' +
+      '</div>' +
+      '<h3>' + c.t + '</h3>' +
+      '<p>' + c.d + '</p>';
+    cardsGrid.appendChild(el);
+  });
+
+  /* ---------------- Timeline ---------------- */
+  var FASES = [
+    {n:1, t:'Desmonte de Escombros y Puente Militar Temporal', dur:'4 – 6 semanas',
+     d:'Remoción controlada de los restos de la estructura colapsada y montaje de un puente militar tipo Bailey o Acrow como paso provisional, restableciendo de inmediato la conectividad vital entre La Unión y La Victoria mientras avanza la obra definitiva.',
+     items:['Limpieza y disposición de escombros en el cauce','Habilitación de accesos provisionales','Puente militar temporal operativo para tráfico liviano']},
+    {n:2, t:'Estudios Geotécnicos y Pilotaje Profundo', dur:'10 – 14 semanas',
+     d:'Exploración geotécnica (SPT, CPT y sondeos) para caracterizar el lecho aluvial y ubicar el estrato rocoso. Excavación e instalación de pilotes de concreto reforzado a 35 m de profundidad: las verdaderas zapatas del puente, diseñadas para anular el riesgo de licuación.',
+     items:['Sondeos geotécnicos y perfil estratigráfico del cauce','Pilotes excavados fundidos con tubo Tremi bajo agua','Verificación de capacidad portante en roca o estrato duro']},
+    {n:3, t:'Estribos Definitivos y Aisladores Sísmicos', dur:'8 – 10 semanas',
+     d:'Construcción de los estribos de concreto reforzado sobre los cabezales de pilotes, que recibirán el empuje del arco, e instalación de aisladores sísmicos de péndulo por fricción (FPS) entre el tablero/arco y los estribos, el sistema de disipación de energía exigido por la NSR-10 para puentes esenciales. Al no haber pilas en el cauce, toda la obra de este tipo se ejecuta en tierra, sobre las márgenes del río.',
+     items:["Estribos de concreto reforzado f'c = 28 MPa",'Montaje de aisladores FPS en acero inoxidable y teflón','Pruebas de desplazamiento lateral de los aisladores']},
+    {n:4, t:'Montaje del Arco y Tablero Colgado', dur:'6 – 8 semanas',
+     d:'Izaje y cierre en el centro del cauce de las secciones del arco en acero estructural ASTM A709, instalación de las péndolas que cuelgan el tablero del arco, fundida de la losa de rodadura y entrega de los 140 m de luz libre sin apoyos en el agua.',
+     items:['Izaje de dovelas del arco y cierre en clave','Montaje y tensionado de péndolas','Losa de rodadura, barandas y señalización final']}
+  ];
+  var timeline = document.getElementById('timeline');
+  FASES.forEach(function(f){
+    var li = document.createElement('div');
+    li.className = 'phase';
+    li.innerHTML =
+      '<div class="phase-num">' + String(f.n).padStart(2,'0') + '</div>' +
+      '<div class="phase-card">' +
+        '<div class="phase-head"><h3>Fase ' + f.n + ' · ' + f.t + '</h3><span class="phase-dur">' + f.dur + '</span></div>' +
+        '<p class="phase-desc">' + f.d + '</p>' +
+        '<ul class="phase-list">' + f.items.map(function(i){ return '<li>'+i+'</li>'; }).join('') + '</ul>' +
+      '</div>';
+    timeline.appendChild(li);
+  });
+
+  /* ---------------- Especificaciones tabla ---------------- */
+  var SPECS = [
+    {c:'Losa de Tablero', m:'Concreto Postensado', s:"Resistencia f'c = 35 a 40 MPa (5000–5800 psi). Concreto de baja permeabilidad para resistir la humedad del entorno fluvial. El tablero actúa como tirante del arco."},
+    {c:'Arco y Péndolas', m:'Acero ASTM A709', s:'Grado 50W (tipo Corten). Genera una pátina de óxido protectora natural, eliminando la necesidad de repintar sobre el río.'},
+    {c:'Acero de Refuerzo', m:'Acero Corrugado', s:'Límite de fluencia fy = 420 MPa (Grado 60), cumpliendo la Norma Técnica Colombiana NTC 2289.'},
+    {c:'Estribos y Pilotes', m:'Concreto Reforzado (Subacuático en pilotes)', s:"Resistencia f'c = 28 MPa (4000 psi). Aditivos impermeabilizantes y plastificantes para fundición bajo agua con tubo Tremi. Sin pilas ni cimentación dentro del cauce."},
+    {c:'Apoyos Sísmicos', m:'Aisladores de Péndulo por Fricción (FPS)', s:'Acero inoxidable y teflón bajo el tablero. Permiten desplazamientos laterales &gt; 40 cm sin transferir fuerza letal a la vía.'}
+  ];
+  var tbody = document.getElementById('specTableBody');
+  SPECS.forEach(function(r){
+    var tr = document.createElement('tr');
+    tr.innerHTML = '<td class="comp">'+r.c+'</td><td class="mat">'+r.m+'</td><td class="spec">'+r.s+'</td>';
+    tbody.appendChild(tr);
+  });
+
+  /* ================= Perfil longitudinal SVG ================= */
+  var VB_W = 1000, VB_H = 640, MI = 70, MD = 40, AU = VB_W-MI-MD;
+  var YMIN=-40, YMAX=40, MS=30, MB=30, AH = VB_H-MS-MB;
+  var LUZ = 140, NIVEL_TABLERO = 9, NIVEL_AGUA = 0, PROF_PILOTES = -35;
+  var ARCO_RISE = 22, ARCO_APEX = NIVEL_TABLERO + ARCO_RISE;
+  function eX(x){ return MI + (x/LUZ)*AU; }
+  function eY(y){ var t=(y-YMAX)/(YMIN-YMAX); return MS + t*AH; }
+
+  var lecho = [[0,1.5],[20,-1],[35,-5],[55,-7.5],[70,-8],[85,-7.5],[105,-5],[120,-1],[140,1.5]];
+  var lechoPath = lecho.map(function(p,i){ return (i===0?'M ':'L ')+eX(p[0])+' '+eY(p[1]); }).join(' ');
+  var aguaPath = 'M '+eX(0)+' '+eY(NIVEL_AGUA)+' L '+eX(140)+' '+eY(NIVEL_AGUA)+' ' +
+    lecho.slice().reverse().map(function(p){ return 'L '+eX(p[0])+' '+eY(p[1]); }).join(' ') + ' Z';
+
+  // Arco parabólico entre estribos (sin apoyos dentro del cauce): y(x) de la
+  // curva de Bézier cuadrática simétrica M(0,NIVEL_TABLERO) Q(70,p1y) (140,NIVEL_TABLERO).
+  var ARCO_P1Y = 2*ARCO_APEX - NIVEL_TABLERO;
+  function arcoY(xReal){
+    var t = xReal/LUZ;
+    return NIVEL_TABLERO*((1-t)*(1-t)+t*t) + 2*t*(1-t)*ARCO_P1Y;
+  }
+  var PENDOLAS_X = [17.5,35,52.5,70,87.5,105,122.5];
+
+  function arcoSvg(){
+    var d = 'M '+eX(0)+' '+eY(NIVEL_TABLERO)+' Q '+eX(70)+' '+eY(ARCO_P1Y)+' '+eX(140)+' '+eY(NIVEL_TABLERO);
+    return '<g class="plano-elem" data-id="arco" style="cursor:pointer">' +
+      '<path d="'+d+'" fill="none" stroke="#a8472b" stroke-width="5" stroke-linecap="round"/>' +
+      '<text x="'+eX(70)+'" y="'+(eY(ARCO_APEX)-10)+'" text-anchor="middle" font-size="10" fill="#a8472b" font-family="JetBrains Mono, monospace">arco — acero A709</text>' +
+    '</g>';
+  }
+  function pendolasSvg(){
+    var yTableroTope = eY(NIVEL_TABLERO+0.9);
+    return '<g class="plano-elem" data-id="pendolones" style="cursor:pointer">' +
+      PENDOLAS_X.map(function(x){
+        var xp = eX(x), yArco = eY(arcoY(x));
+        return '<line x1="'+xp+'" y1="'+yArco+'" x2="'+xp+'" y2="'+yTableroTope+'" stroke="#8a7f6c" stroke-width="2.5"/>';
+      }).join('') +
+    '</g>';
+  }
+  function estriboSvg(xReal, orient){
+    var x=eX(xReal), yTope=eY(NIVEL_TABLERO+1.4), yBase=eY(1.5), ancho=46;
+    var dx = orient==='izq' ? 0 : -ancho;
+    var pts = (x+dx)+','+yTope+' '+(x+dx+ancho)+','+yTope+' '+(x+dx+ancho*0.65)+','+yBase+' '+(x+dx+ancho*0.35)+','+yBase;
+    return '<g class="plano-elem" data-id="estribo-'+orient+'" style="cursor:pointer"><polygon points="'+pts+'" fill="#a89a7c" stroke="#3d7a80" stroke-width="1"/></g>';
+  }
+  function cimentacionSvg(xReal, orient){
+    // Pilotes profundos bajo cada estribo (no hay pilas ni pilotaje dentro del cauce).
+    var x=eX(xReal), yCabezal=eY(1.2), yPunta=eY(PROF_PILOTES);
+    var offs = orient==='izq' ? [8,20,32] : [-8,-20,-32];
+    return '<g class="plano-elem" data-id="pilotes" style="cursor:pointer">' +
+      offs.map(function(off){
+        return '<line x1="'+(x+off)+'" y1="'+yCabezal+'" x2="'+(x+off)+'" y2="'+yPunta+'" stroke="#8a7f6c" stroke-width="4"/>';
+      }).join('') +
+      (orient==='izq' ? '<text x="'+(x+20)+'" y="'+(yPunta+14)+'" text-anchor="middle" fill="#e0b96a" font-size="9" font-family="JetBrains Mono, monospace">-35 m</text>' : '') +
+    '</g>';
+  }
+
+  var tableroY0 = eY(NIVEL_TABLERO+0.9), tableroY1 = eY(NIVEL_TABLERO-0.9);
+  var svg =
+    '<svg viewBox="0 0 '+VB_W+' '+VB_H+'" class="diagram" role="img" aria-label="Perfil longitudinal del puente Mariano Ospina Pérez">' +
+      '<defs>' +
+        '<marker id="flecha" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#5c4726"/></marker>' +
+        '<linearGradient id="aguaGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#5c7256" stop-opacity="0.65"/><stop offset="100%" stop-color="#33351f" stop-opacity="0.88"/></linearGradient>' +
+      '</defs>' +
+      '<line x1="'+MI+'" y1="'+eY(ARCO_APEX+4)+'" x2="'+eX(140)+'" y2="'+eY(ARCO_APEX+4)+'" stroke="#5c4726" stroke-width="1" marker-start="url(#flecha)" marker-end="url(#flecha)"/>' +
+      '<text x="'+((MI+eX(140))/2)+'" y="'+(eY(ARCO_APEX+4)-8)+'" text-anchor="middle" font-size="13" fill="#1f4d52" font-family="JetBrains Mono, monospace">140 m — luz continua sin apoyos en el río</text>' +
+      '<path d="'+lechoPath+' L '+eX(140)+' '+(VB_H-MB)+' L '+eX(0)+' '+(VB_H-MB)+' Z" fill="#4a3a22"/>' +
+      '<path d="'+aguaPath+'" fill="url(#aguaGrad)"/>' +
+      '<line x1="'+eX(0)+'" y1="'+eY(NIVEL_AGUA)+'" x2="'+eX(140)+'" y2="'+eY(NIVEL_AGUA)+'" stroke="#3d7a80" stroke-width="1" stroke-dasharray="4 3"/>' +
+      '<text x="'+(eX(140)+6)+'" y="'+(eY(NIVEL_AGUA)+4)+'" font-size="10" fill="#1f4d52" font-family="JetBrains Mono, monospace">N.A.M.</text>' +
+      '<path d="'+lechoPath+'" fill="none" stroke="#4a3a22" stroke-width="2"/>' +
+      '<text x="'+eX(70)+'" y="'+(eY(-8)+16)+'" text-anchor="middle" font-size="9" fill="#f2e8cf" font-family="JetBrains Mono, monospace">lecho aluvial (arcillas y limos blandos) · 5–8 m — sin pilas ni cimentación</text>' +
+      arcoSvg() + pendolasSvg() +
+      estriboSvg(0,'izq') + estriboSvg(140,'der') +
+      cimentacionSvg(0,'izq') + cimentacionSvg(140,'der') +
+      '<g class="plano-elem" data-id="tablero" style="cursor:pointer">' +
+        '<rect x="'+eX(0)+'" y="'+tableroY0+'" width="'+(eX(140)-eX(0))+'" height="'+(tableroY1-tableroY0)+'" fill="#f7f1de" stroke="#3d7a80" stroke-width="1.5"/>' +
+        '<text x="'+eX(70)+'" y="'+(tableroY0-8)+'" text-anchor="middle" font-size="10" fill="#33230f" font-family="JetBrains Mono, monospace">tablero — colgado del arco (tirante)</text>' +
+      '</g>' +
+      '<g font-family="JetBrains Mono, monospace" font-size="9" fill="#5c4726">' +
+        '<text x="12" y="'+eY(NIVEL_TABLERO)+'">+9 m</text>' +
+        '<text x="12" y="'+eY(NIVEL_AGUA)+'">0 m</text>' +
+        '<text x="8" y="'+eY(PROF_PILOTES)+'">-35 m</text>' +
+      '</g>' +
+      '<g font-family="JetBrains Mono, monospace" font-size="9" fill="#1f4d52" opacity="0.85">' +
+        '<text x="'+eX(0)+'" y="'+(VB_H-MB+16)+'" text-anchor="middle">4°32′N 76°06′O</text>' +
+        '<text x="'+eX(140)+'" y="'+(VB_H-MB+16)+'" text-anchor="middle">4°31′N 76°02′O</text>' +
+      '</g>' +
+    '</svg>';
+  document.getElementById('planoSvgHolder').innerHTML = svg;
+
+  var ELEMENTOS = {
+    'estribo-izq': {t:'Estribo + aislador FPS', n:'Estribo La Unión', d:'Estribo de concreto reforzado que recibe el empuje del arco y la reacción del tablero, con aislador sísmico de péndulo por fricción entre la superestructura y el estribo, en la margen de La Unión.'},
+    'arco': {t:'Superestructura principal', n:'Arco de acero A709', d:"Arco en acero estructural ASTM A709 Grado 50W (autopatinable), de 140 m de luz entre estribos y sin ningún apoyo dentro del cauce. El tablero cuelga del arco mediante péndolas."},
+    'pendolones': {t:'Elementos de suspensión', n:'Péndolas', d:'Barras o cables de acero de alta resistencia que cuelgan el tablero del arco, distribuidas a lo largo de los 140 m de luz.'},
+    'estribo-der': {t:'Estribo + aislador FPS', n:'Estribo La Victoria', d:'Estribo de concreto reforzado en la margen de La Victoria, con aletas de contención del terraplén de acceso y aislador sísmico de péndulo por fricción.'},
+    'tablero': {t:'Superestructura', n:'Tablero colgado', d:"Losa de concreto sobre viga cajón (f'c = 35–40 MPa), 12 m de ancho, suspendida del arco y sin apoyos en el agua a lo largo de los 140 m de luz."},
+    'pilotes': {t:'Cimentación profunda', n:'Pilotes bajo estribos', d:'Pilotes de concreto reforzado excavados hasta 35 m de profundidad, fundidos bajo agua con tubo Tremi, apoyados en roca o estrato duro. Solo existen bajo los estribos: no hay cimentación dentro del cauce.'}
+  };
+  var ORDER = ['estribo-izq','arco','pendolones','estribo-der','tablero','pilotes'];
+
+  var elemBtns = document.getElementById('elemBtns');
+  ORDER.forEach(function(id){
+    var b = document.createElement('button');
+    b.className = 'elem-btn'; b.type='button'; b.dataset.id = id;
+    b.textContent = ELEMENTOS[id].n;
+    elemBtns.appendChild(b);
+  });
+
+  var seleccion = null;
+  function renderSeleccion(){
+    document.querySelectorAll('.plano-elem').forEach(function(g){
+      g.style.opacity = (seleccion && g.dataset.id !== seleccion) ? '0.35' : '1';
+    });
+    elemBtns.querySelectorAll('.elem-btn').forEach(function(b){
+      b.classList.toggle('active', b.dataset.id === seleccion);
+    });
+    var content = document.getElementById('legendContent');
+    if(seleccion && ELEMENTOS[seleccion]){
+      var el = ELEMENTOS[seleccion];
+      content.innerHTML = '<span class="legend-type">'+el.t+'</span><div class="legend-name">'+el.n+'</div><p class="legend-detail">'+el.d+'</p>';
+    } else {
+      content.innerHTML = '<p class="legend-empty">Selecciona un elemento del plano o de la lista para ver su detalle técnico.</p>';
+    }
+  }
+  function selectId(id){ seleccion = (seleccion === id) ? null : id; renderSeleccion(); }
+  document.querySelectorAll('.plano-elem').forEach(function(g){
+    g.addEventListener('click', function(){ selectId(g.dataset.id); });
+  });
+  elemBtns.querySelectorAll('.elem-btn').forEach(function(b){
+    b.addEventListener('click', function(){ selectId(b.dataset.id); });
+  });
+
+  /* ---------------- Copy button ---------------- */
+  var copyBtn = document.getElementById('copyBtn');
+  copyBtn.addEventListener('click', function(){
+    var num = '3113738912';
+    function done(){
+      copyBtn.textContent = '✓ Número copiado';
+      copyBtn.classList.add('copied');
+      setTimeout(function(){ copyBtn.textContent = 'Copiar número'; copyBtn.classList.remove('copied'); }, 2000);
+    }
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(num).then(done).catch(function(){});
+    }
+  });
+
+  /* ================= Vanilla three.js viewer ================= */
+  (function initViewer(){
+    var box = document.getElementById('viewerCanvasBox');
+    if(!box) return;
+    if(!window.THREE){
+      var fb = document.getElementById('viewerFallback');
+      if(fb) fb.textContent = 'El visor 3D no pudo cargar (sin conexión al CDN). El resto del sitio funciona con normalidad.';
+      return;
+    }
+    var fallbackEl = document.getElementById('viewerFallback');
+    if(fallbackEl) fallbackEl.remove();
+
+    var scene = new THREE.Scene();
+    scene.background = new THREE.Color(0xcfe3dc);
+    scene.fog = new THREE.Fog(0xcfe3dc, 20, 38);
+
+    var camera = new THREE.PerspectiveCamera(42, box.clientWidth/box.clientHeight, 0.1, 100);
+    var target = new THREE.Vector3(0,0.6,0);
+    var spherical = new THREE.Spherical();
+    camera.position.set(10.5,5.6,13);
+    spherical.setFromVector3(camera.position.clone().sub(target));
+
+    var renderer = new THREE.WebGLRenderer({ antialias:true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio||1, 2));
+    renderer.setSize(box.clientWidth, box.clientHeight);
+    box.appendChild(renderer.domElement);
+
+    scene.add(new THREE.AmbientLight(0xfff3dd, 0.6));
+    scene.add(new THREE.HemisphereLight(0xdfeee6, 0x6b6142, 0.55));
+    var dl1 = new THREE.DirectionalLight(0xfff6e0, 1.5); dl1.position.set(10,15,6); scene.add(dl1);
+    var dl2 = new THREE.DirectionalLight(0x9fc4c0, 0.3); dl2.position.set(-6,4,-8); scene.add(dl2);
+
+    var ESCALA = 1/10, LUZ_T = 140*ESCALA, MITAD = LUZ_T/2;
+    var ROAD_Y = 1.33; // nivel superior del tablero (1.22 + mitad del alto 0.22): la vía de acceso empalma exactamente aquí, sin escalón.
+
+    function box3(w,h,d,color,opts){
+      var m = new THREE.Mesh(new THREE.BoxGeometry(w,h,d), new THREE.MeshStandardMaterial(Object.assign({color:color, roughness:0.7}, opts||{})));
+      return m;
+    }
+    function cyl(rt,rb,h,color,seg,opts){
+      var m = new THREE.Mesh(new THREE.CylinderGeometry(rt,rb,h,seg||20), new THREE.MeshStandardMaterial(Object.assign({color:color, roughness:0.7}, opts||{})));
+      return m;
+    }
+
+    var puente = new THREE.Group();
+    scene.add(puente);
+
+    // Terreno / riberas (tono campo del Valle del Cauca)
+    var lechoMesh = new THREE.Mesh(new THREE.PlaneGeometry(40,24), new THREE.MeshStandardMaterial({color:0x8a9a5c, roughness:1}));
+    lechoMesh.rotation.x = -Math.PI/2; lechoMesh.position.y = -0.85;
+    puente.add(lechoMesh);
+    // Franja de orilla más oscura junto al cauce
+    var orillaMat = new THREE.MeshStandardMaterial({color:0x6e7a46, roughness:1});
+    [-1.35,1.35].forEach(function(z){
+      var m = new THREE.Mesh(new THREE.PlaneGeometry(40,1.1), orillaMat);
+      m.rotation.x = -Math.PI/2; m.position.set(0,-0.84,z);
+      puente.add(m);
+    });
+
+    // Agua turbia (color real limo-arcilloso del río Cauca)
+    var aguaMesh = new THREE.Mesh(new THREE.PlaneGeometry(40,2.5), new THREE.MeshStandardMaterial({color:0x6b6a3f, transparent:true, opacity:0.8, roughness:0.35, metalness:0.05}));
+    aguaMesh.rotation.x = -Math.PI/2;
+    puente.add(aguaMesh);
+
+    // Vegetación esquemática en las riberas (referencia de escala)
+    var follajeMat = new THREE.MeshStandardMaterial({color:0x55703a, roughness:1});
+    var troncoMat = new THREE.MeshStandardMaterial({color:0x5a4326, roughness:1});
+    function arbol(x,z,s){
+      var g = new THREE.Group(); g.position.set(x,-0.85,z);
+      var tronco = new THREE.Mesh(new THREE.CylinderGeometry(0.02*s,0.03*s,0.22*s,6), troncoMat);
+      tronco.position.y = 0.11*s; g.add(tronco);
+      var copa = new THREE.Mesh(new THREE.SphereGeometry(0.14*s,8,6), follajeMat);
+      copa.position.y = 0.26*s; g.add(copa);
+      return g;
+    }
+    [[-5.6,1.7,1],[-5.1,1.9,0.8],[5.4,-1.7,1.1],[6.0,-1.8,0.8],[-2.2,1.75,0.7],[2.6,-1.75,0.9]].forEach(function(t){
+      puente.add(arbol(t[0],t[1],t[2]));
+    });
+
+    function pilote(x,z){
+      var prof=0.85, alto=prof+0.15;
+      var m = cyl(0.14,0.14,alto,0x9a9284,20);
+      m.position.set(x, -prof/2+0.075, z);
+      return m;
+    }
+    function cabezalPilotes(x){
+      var g = new THREE.Group(); g.position.x = x;
+      [-0.5,-0.17,0.17,0.5].forEach(function(z){ g.add(pilote(0,z)); });
+      var cap = box3(0.55,0.3,1.3,0xaba188); cap.position.set(0,0.18,0); g.add(cap);
+      return g;
+    }
+    // Sin pilas ni cimentación dentro del cauce: el arco solo se apoya en los
+    // estribos de cada orilla, con aisladores FPS entre la superestructura y el estribo.
+    function arcoAltura(t, apexY){
+      var p1y = 2*apexY - ROAD_Y;
+      return ROAD_Y*((1-t)*(1-t)+t*t) + 2*t*(1-t)*p1y;
+    }
+    function arco(){
+      var g = new THREE.Group();
+      var apexY = ROAD_Y + 1.15;
+      var archMat = new THREE.MeshStandardMaterial({color:0xa8472b, roughness:0.55, metalness:0.35});
+      [-0.55,0.55].forEach(function(z){
+        var pts = [];
+        for(var i=0;i<=40;i++){
+          var t = i/40;
+          pts.push(new THREE.Vector3(-MITAD+LUZ_T*t, arcoAltura(t, apexY), z));
+        }
+        var curve = new THREE.CatmullRomCurve3(pts);
+        var geo = new THREE.TubeGeometry(curve, 60, 0.05, 8, false);
+        g.add(new THREE.Mesh(geo, archMat));
+      });
+      return g;
+    }
+    function pendolas(){
+      var g = new THREE.Group();
+      var apexY = ROAD_Y + 1.15;
+      [-0.55,0.55].forEach(function(z){
+        for(var i=1;i<8;i++){
+          var t = i/8;
+          var x = -MITAD+LUZ_T*t;
+          var yArco = arcoAltura(t, apexY);
+          var h = cyl(0.018,0.018, Math.max(yArco-ROAD_Y,0.02), 0xb0a68a, 8, {roughness:0.5, metalness:0.4});
+          h.position.set(x, (yArco+ROAD_Y)/2, z);
+          g.add(h);
+        }
+      });
+      return g;
+    }
+    function estribo(x){
+      var g = new THREE.Group(); g.position.x = x;
+      var base = box3(0.6,1.3,1.6,0xc4bda4); base.position.set(0,0.55,0); g.add(base);
+      var aislador = cyl(0.26,0.26,0.1,0xa8721f,24,{metalness:0.6, roughness:0.35}); aislador.position.set(0,1.35,0); g.add(aislador);
+      g.add(cabezalPilotes(0));
+      return g;
+    }
+    function tablero(){
+      var g = new THREE.Group(); g.position.y = 1.22;
+      var deck = box3(LUZ_T,0.22,1.4,0xf0ead6,{roughness:0.5}); g.add(deck);
+      [-0.5,0,0.5].forEach(function(z){ var v=box3(LUZ_T,0.18,0.12,0xc4bda4,{roughness:0.6}); v.position.set(0,-0.16,z); g.add(v); });
+      [-0.68,0.68].forEach(function(z){ var r=box3(LUZ_T,0.14,0.03,0x3d6b78,{metalness:0.3,roughness:0.4}); r.position.set(0,0.18,z); g.add(r); });
+      return g;
+    }
+    function accesoVial(x, signo){
+      // Rampa de acceso que empalma al nivel exacto del tablero (ROAD_Y) en el
+      // estribo y desciende hacia el terreno: evita el escalón entre puente y vía.
+      // El grupo se ancla en el punto de unión y se rota como un todo, para que
+      // el borde cercano al estribo quede fijo (pivote) y no floten las piezas.
+      var g = new THREE.Group();
+      g.position.set(x, ROAD_Y, 0);
+      var L = 2.2, T = 0.06, W = 1.1;
+      var ramp = new THREE.Group();
+      ramp.rotation.z = -signo * 0.4; // inclinación de la rampa (rad), pivota en el origen del grupo
+      g.add(ramp);
+
+      var via = box3(L, T, W, 0x4a463c, {roughness:0.95});
+      via.position.set(signo*L/2, -T/2, 0);
+      ramp.add(via);
+
+      var linea = box3(L*0.9, T+0.002, 0.04, 0xe8dfc4, {roughness:0.8});
+      linea.position.set(signo*L/2, 0.001, 0);
+      ramp.add(linea);
+
+      // Relleno / terraplén de apoyo bajo la rampa, apoyado en el terreno
+      var relleno = box3(L*0.94, 0.5, W*0.82, 0x8a7a52, {roughness:1});
+      relleno.position.set(signo*L*0.52, -T-0.25, 0);
+      ramp.add(relleno);
+
+      return g;
+    }
+
+    puente.add(estribo(-MITAD)); puente.add(estribo(MITAD));
+    puente.add(accesoVial(-MITAD, -1)); puente.add(accesoVial(MITAD, 1));
+    puente.add(arco()); puente.add(pendolas());
+    puente.add(tablero());
+
+    // Cartel de identificación, justo en el arranque de la rampa de La Unión
+    (function nameplate(){
+      var g = new THREE.Group();
+      g.position.set(-MITAD - 0.12, ROAD_Y, 0.82);
+      var postMat = new THREE.MeshStandardMaterial({color:0x4a4740, roughness:0.8});
+      [[-0.55,0],[0.55,0]].forEach(function(p){
+        var post = new THREE.Mesh(new THREE.CylinderGeometry(0.025,0.025,0.55,8), postMat);
+        post.position.set(p[0], 0.275, p[1]);
+        g.add(post);
+      });
+      var canvas = document.createElement('canvas');
+      canvas.width = 512; canvas.height = 128;
+      var ctx = canvas.getContext('2d');
+      ctx.fillStyle = '#f7f1de'; ctx.fillRect(0,0,512,128);
+      ctx.strokeStyle = '#33230f'; ctx.lineWidth = 6; ctx.strokeRect(4,4,504,120);
+      ctx.fillStyle = '#33230f';
+      ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+      ctx.font = '700 34px Georgia, serif';
+      ctx.fillText('PUENTE', 256, 42);
+      ctx.font = '700 28px Georgia, serif';
+      ctx.fillText('MARIANO OSPINA PÉREZ', 256, 82);
+      ctx.font = '18px "JetBrains Mono", monospace';
+      ctx.fillStyle = '#5c4726';
+      ctx.fillText('RÍO CAUCA', 256, 110);
+      var tex = new THREE.CanvasTexture(canvas);
+      var plate = new THREE.Mesh(new THREE.PlaneGeometry(1.15,0.29), new THREE.MeshStandardMaterial({map:tex, roughness:0.7}));
+      plate.position.set(0, 0.4, 0);
+      g.add(plate);
+      var plateBack = plate.clone(); plateBack.rotation.y = Math.PI;
+      g.add(plateBack);
+      puente.add(g);
+    })();
+
+    // Camión de carga cruzando el tablero (tránsito pesado agroindustrial)
+    var camion = new THREE.Group();
+    (function buildCamion(){
+      var cabina = box3(0.26,0.24,0.34,0xa8472b,{roughness:0.55});
+      cabina.position.set(0.32,0.15,0);
+      camion.add(cabina);
+      var parabrisas = box3(0.02,0.13,0.28,0x9fc4d8,{roughness:0.2,metalness:0.4});
+      parabrisas.position.set(0.44,0.17,0);
+      camion.add(parabrisas);
+      var platon = box3(0.62,0.16,0.36,0xcdbf9c,{roughness:0.85});
+      platon.position.set(-0.16,0.11,0);
+      camion.add(platon);
+      var baranda = new THREE.MeshStandardMaterial({color:0x5a4326,roughness:0.9});
+      [-0.16-0.30,-0.16+0.30].forEach(function(x){
+        var b = new THREE.Mesh(new THREE.BoxGeometry(0.02,0.10,0.36), baranda);
+        b.position.set(x,0.24,0); camion.add(b);
+      });
+      var crateColors = [0xd9861f,0xb5622c,0xcaa23a,0xd9861f,0x8a9a4a,0xcaa23a];
+      var ci=0;
+      for(var cx=-0.40; cx<=0.06; cx+=0.155){
+        for(var cz=-0.11; cz<=0.11; cz+=0.11){
+          var crate = box3(0.13,0.11,0.10,crateColors[ci%crateColors.length],{roughness:0.9});
+          crate.position.set(cx,0.245,cz);
+          camion.add(crate); ci++;
+        }
+      }
+      var wheelMat = new THREE.MeshStandardMaterial({color:0x2b2620,roughness:0.9});
+      [[0.34,0.16],[0.34,-0.16],[-0.02,0.16],[-0.02,-0.16],[-0.32,0.16],[-0.32,-0.16]].forEach(function(p){
+        var wheel = new THREE.Mesh(new THREE.CylinderGeometry(0.075,0.075,0.07,14), wheelMat);
+        wheel.rotation.x = Math.PI/2;
+        wheel.position.set(p[0],0.075,p[1]);
+        camion.add(wheel);
+      });
+      camion.position.set(-MITAD*0.6, 1.33, 0.35);
+      puente.add(camion);
+    })();
+
+    // Tren cañero de fondo, sobre su propia vía en el campo (no en el puente)
+    (function trenCanero(){
+      var g = new THREE.Group();
+      g.position.set(-2.8, -0.85, -6.6);
+      g.rotation.y = -0.18;
+      var via = box3(5.6,0.02,0.14,0x5c4726,{roughness:0.9});
+      via.position.set(0,0.01,0); g.add(via);
+      var locoMat = new THREE.MeshStandardMaterial({color:0x3d6b74,roughness:0.6});
+      var loco = new THREE.Mesh(new THREE.BoxGeometry(0.34,0.22,0.16), locoMat);
+      loco.position.set(-2.1,0.14,0); g.add(loco);
+      var cabina = new THREE.Mesh(new THREE.BoxGeometry(0.14,0.1,0.16), locoMat);
+      cabina.position.set(-2.0,0.29,0); g.add(cabina);
+      var caneMat = new THREE.MeshStandardMaterial({color:0xc7b56a,roughness:1});
+      for(var i=0;i<5;i++){
+        var vagon = new THREE.Mesh(new THREE.BoxGeometry(0.30,0.16,0.17), caneMat);
+        vagon.position.set(-1.6+i*0.36, 0.11, 0);
+        g.add(vagon);
+      }
+      var ruedaMat = new THREE.MeshStandardMaterial({color:0x2b2620,roughness:0.9});
+      for(var j=-2.1;j<=0.5;j+=0.36){
+        [-0.06,0.06].forEach(function(z){
+          var r = new THREE.Mesh(new THREE.CylinderGeometry(0.03,0.03,0.04,10), ruedaMat);
+          r.rotation.x = Math.PI/2; r.position.set(j,0.03,z);
+          g.add(r);
+        });
+      }
+      puente.add(g);
+    })();
+
+    // Sprite labels
+    function makeLabel(text){
+      var pad = 10, fontSize = 30;
+      var canvas = document.createElement('canvas');
+      var ctx = canvas.getContext('2d');
+      ctx.font = fontSize+'px JetBrains Mono, monospace';
+      var w = Math.ceil(ctx.measureText(text).width) + pad*2;
+      var h = fontSize + pad*2;
+      canvas.width = w; canvas.height = h;
+      ctx.font = fontSize+'px JetBrains Mono, monospace';
+      ctx.fillStyle = 'rgba(247,238,218,0.94)';
+      ctx.strokeStyle = 'rgba(51,35,15,0.6)';
+      ctx.lineWidth = 2;
+      ctx.fillRect(0,0,w,h); ctx.strokeRect(1,1,w-2,h-2);
+      ctx.fillStyle = '#1f4d52';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(text, pad, h/2);
+      var tex = new THREE.CanvasTexture(canvas);
+      tex.minFilter = THREE.LinearFilter;
+      var mat = new THREE.SpriteMaterial({ map:tex, transparent:true, depthTest:false });
+      var sprite = new THREE.Sprite(mat);
+      var scale = 0.011;
+      sprite.scale.set(w*scale, h*scale, 1);
+      return sprite;
+    }
+    var labelGroup = new THREE.Group();
+    var labelDefs = [
+      [-MITAD-1.5, 1.35, 0.85, '← La Unión, Valle del Cauca'],
+      [MITAD+1.5, 1.35, 0.85, 'La Victoria, Valle del Cauca →'],
+      [0, ROAD_Y+1.15+0.2, 0.9, 'Arco · Acero A709 (sin apoyos en el río)'],
+      [-MITAD+0.3, 1.5, 0.9, 'Aislador FPS · Estribo'],
+      [-MITAD, -0.4, 0.9, 'Pilotes a 35 m'],
+      [-MITAD*0.6, 1.75, 0.35, 'Camión HL-93 · carga frutícola']
+    ];
+    labelDefs.forEach(function(l){
+      var s = makeLabel(l[3]);
+      s.position.set(l[0], l[1], l[2]);
+      labelGroup.add(s);
+    });
+    puente.add(labelGroup);
+
+    // State
+    var rotando = !reducedMotion;
+    var etiquetas = true;
+    var agua = true;
+    var dragging = false, lastX=0, lastY=0;
+    var canvas = renderer.domElement;
+
+    function clampPhi(p){ return Math.max(0.12, Math.min(Math.PI/2-0.02, p)); }
+    function clampRadius(r){ return Math.max(4, Math.min(22, r)); }
+
+    canvas.addEventListener('pointerdown', function(e){
+      dragging = true; lastX = e.clientX; lastY = e.clientY;
+      canvas.setPointerCapture(e.pointerId);
+    });
+    canvas.addEventListener('pointermove', function(e){
+      if(!dragging) return;
+      var dx = e.clientX - lastX, dy = e.clientY - lastY;
+      lastX = e.clientX; lastY = e.clientY;
+      spherical.theta -= dx * 0.006;
+      spherical.phi = clampPhi(spherical.phi + dy * 0.006);
+    });
+    function endDrag(){ dragging = false; }
+    canvas.addEventListener('pointerup', endDrag);
+    canvas.addEventListener('pointerleave', endDrag);
+    canvas.addEventListener('wheel', function(e){
+      e.preventDefault();
+      spherical.radius = clampRadius(spherical.radius + e.deltaY * 0.01);
+    }, { passive:false });
+
+    function resize(){
+      var w = box.clientWidth, h = box.clientHeight;
+      if(w===0||h===0) return;
+      camera.aspect = w/h; camera.updateProjectionMatrix();
+      renderer.setSize(w,h);
+    }
+    window.addEventListener('resize', resize);
+    if(window.ResizeObserver){ new ResizeObserver(resize).observe(box); }
+
+    var clock = new THREE.Clock();
+    function animate(){
+      requestAnimationFrame(animate);
+      var dt = clock.getDelta();
+      if(rotando && !dragging) spherical.theta += dt * 0.25;
+      camera.position.setFromSpherical(spherical).add(target);
+      camera.lookAt(target);
+
+      var t = clock.getElapsedTime();
+      aguaMesh.material.opacity = 0.55 + Math.sin(t*0.6)*0.05;
+
+      renderer.render(scene, camera);
+    }
+    animate();
+
+    // Buttons
+    var btnRotate = document.getElementById('btnRotate');
+    var btnLabels = document.getElementById('btnLabels');
+    var btnWater = document.getElementById('btnWater');
+    function syncBtn(btn, on, onText, offText){
+      btn.classList.toggle('on', on);
+      btn.textContent = on ? onText : offText;
+    }
+    syncBtn(btnRotate, rotando, '⏸ Pausar rotación', '▶ Rotar automáticamente');
+    btnRotate.addEventListener('click', function(){
+      rotando = !rotando;
+      syncBtn(btnRotate, rotando, '⏸ Pausar rotación', '▶ Rotar automáticamente');
+    });
+    btnLabels.addEventListener('click', function(){
+      etiquetas = !etiquetas;
+      labelGroup.visible = etiquetas;
+      syncBtn(btnLabels, etiquetas, '🏷 Etiquetas', '🏷 Etiquetas');
+    });
+    btnWater.addEventListener('click', function(){
+      agua = !agua;
+      aguaMesh.visible = agua;
+      syncBtn(btnWater, agua, '🌊 Nivel del río', '🌊 Nivel del río');
+    });
+
+    resize();
+  })();
+
+})();
+</script>
+
+</body></html>
