@@ -33,6 +33,8 @@ components/
   Timeline.jsx            Línea de tiempo vertical de fases constructivas
   PlanosSVG.jsx            Perfil longitudinal SVG interactivo
   EspecificacionesTabla.jsx Marco normativo + tabla de materiales
+  Apoyo.jsx                Sección de apoyo voluntario (Nequi)
+  Comentarios.jsx           Sección de comentarios (giscus / GitHub Discussions)
   Navbar.jsx / Footer.jsx   Navegación y pie de página
   icons/TechIcons.jsx        Iconografía SVG de las tarjetas técnicas
 data/
@@ -71,6 +73,20 @@ un modelo real modelado en Blender o FreeCAD:
 
 El resto del visor (controles de órbita, botones de rotación/etiquetas/nivel
 del río, iluminación) sigue funcionando sin cambios.
+
+## Sección de comentarios
+
+La sección "Comentarios" (`components/Comentarios.jsx`) usa
+[giscus](https://giscus.app), que guarda los comentarios como hilos de
+**GitHub Discussions** de este mismo repositorio (no requiere backend ni
+base de datos propia). Ya está configurada y apuntando al repo
+`ozcaredo89/puente`, categoría `General`.
+
+Si alguna vez necesitas regenerar la configuración (por ejemplo, si cambias
+de repositorio o de categoría), vuelve a
+<https://giscus.app>, escribe el repositorio, elige la categoría y copia los
+nuevos valores `data-repo-id` / `data-category-id` en las constantes
+`GISCUS_REPO_ID` / `GISCUS_CATEGORY_ID` de `components/Comentarios.jsx`.
 
 ## Despliegue
 

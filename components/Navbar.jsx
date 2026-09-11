@@ -11,6 +11,7 @@ const enlaces = [
   { href: "#planos", label: "Planos" },
   { href: "#normativa", label: "Normativa" },
   { href: "#apoyo", label: "Apoyar" },
+  { href: "#comentarios", label: "Comentarios" },
 ];
 
 export default function Navbar() {
