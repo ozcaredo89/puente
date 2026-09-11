@@ -90,3 +90,10 @@ Todas las cifras de diseño (luz de 140 m, ancho de 12 m, pilotes a 35 m,
 resistencias de materiales, normativa CCP-14/NSR-10, etc.) están
 centralizadas en `data/proyecto.js` para mantener coherencia entre el Hero,
 la ficha técnica, la línea de tiempo y los planos.
+
+## ¿Quieres colaborar?
+
+Las contribuciones son bienvenidas: correcciones, mejoras de la interfaz,
+nuevas secciones o ajustes a los datos técnicos. Consulta la
+[guía de contribución](CONTRIBUTING.md) para conocer el flujo de trabajo y
+cómo enviar tu Pull Request.
