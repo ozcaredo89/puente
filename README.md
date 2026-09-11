@@ -33,6 +33,8 @@ components/
   Timeline.jsx            Línea de tiempo vertical de fases constructivas
   PlanosSVG.jsx            Perfil longitudinal SVG interactivo
   EspecificacionesTabla.jsx Marco normativo + tabla de materiales
+  Apoyo.jsx                Sección de apoyo voluntario (Nequi)
+  Comentarios.jsx           Sección de comentarios (giscus / GitHub Discussions)
   Navbar.jsx / Footer.jsx   Navegación y pie de página
   icons/TechIcons.jsx        Iconografía SVG de las tarjetas técnicas
 data/
@@ -71,6 +73,26 @@ un modelo real modelado en Blender o FreeCAD:
 
 El resto del visor (controles de órbita, botones de rotación/etiquetas/nivel
 del río, iluminación) sigue funcionando sin cambios.
+
+## Activar la sección de comentarios
+
+La sección "Comentarios" (`components/Comentarios.jsx`) usa
+[giscus](https://giscus.app), que guarda los comentarios como hilos de
+**GitHub Discussions** de este mismo repositorio (no requiere backend ni
+base de datos propia). Ya está apuntando al repo `ozcaredo89/puente`, pero
+falta un paso manual para activarla:
+
+1. En el repositorio en GitHub: **Settings → General → Features** → activa
+   **Discussions**.
+2. Instala la app de giscus en el repo: <https://github.com/apps/giscus>.
+3. Ve a <https://giscus.app>, en la pestaña "repositorio" escribe
+   `ozcaredo89/puente`, elige la categoría de discusión a usar (por defecto
+   `General`) y copia el valor `data-category-id` que te muestra.
+4. Pega ese valor en `GISCUS_CATEGORY_ID` dentro de
+   `components/Comentarios.jsx`.
+
+Hasta que se complete el paso 4, la sección se muestra en el sitio con un
+aviso de "pendiente de activar" en lugar del widget.
 
 ## Despliegue
 

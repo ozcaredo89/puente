@@ -5,6 +5,7 @@ import Timeline from "@/components/Timeline";
 import PlanosSVG from "@/components/PlanosSVG";
 import EspecificacionesTabla from "@/components/EspecificacionesTabla";
 import Apoyo from "@/components/Apoyo";
+import Comentarios from "@/components/Comentarios";
 import Footer from "@/components/Footer";
 
 export default function Home() {
@@ -18,6 +19,7 @@ export default function Home() {
         <PlanosSVG />
         <EspecificacionesTabla />
         <Apoyo />
+        <Comentarios />
       </main>
       <Footer />
     </>
