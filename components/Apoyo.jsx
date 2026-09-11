@@ -41,17 +41,27 @@ export default function Apoyo() {
           <MarcoEsquinas tamano={22} className="text-acero-500/70" />
 
           <div className="grid md:grid-cols-[auto,1fr] gap-8 items-center">
-            <div className="mx-auto md:mx-0 rounded-lg border border-rio-700 bg-white p-3 shadow-lg shadow-black/30">
-              {/* SVG local pequeño (~1 KB): se sirve tal cual, sin pasar por
-                  el optimizador de next/image (innecesario para un vector). */}
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src="/nequi-qr.svg"
-                alt={`Código QR con el número Nequi ${NUMERO_NEQUI}`}
-                width={168}
-                height={168}
-                className="block"
-              />
+            <div className="mx-auto md:mx-0 flex flex-col items-center gap-2">
+              <div className="rounded-lg border border-rio-700 bg-white p-3 shadow-lg shadow-black/30">
+                {/* SVG local pequeño (~1 KB): se sirve tal cual, sin pasar por
+                    el optimizador de next/image (innecesario para un vector). */}
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src="/nequi-qr.svg"
+                  alt={`Código QR con el número Nequi ${NUMERO_NEQUI}`}
+                  width={168}
+                  height={168}
+                  className="block"
+                />
+              </div>
+              <p className="max-w-[168px] text-center text-[11px] leading-snug text-slate-500">
+                Oscar Eduardo Hincapié Vargas
+                <br />
+                Ing. de Sistemas (Ateño)
+                <br />
+                Hijo de Olga María Hincapié, Alba Cecilia Hincapié y Héctor
+                Favio Valenzuela
+              </p>
             </div>
 
             <div className="text-center md:text-left">
