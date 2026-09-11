@@ -229,6 +229,16 @@
   .phase-list li{ display:flex; gap:8px; font-size:12.5px; color:var(--text-dim); }
   .phase-list li::before{ content:''; width:5px; height:5px; border-radius:50%; background:var(--accent); margin-top:6px; flex-shrink:0; }
 
+  /* ---------- Historia / archivo fotográfico ---------- */
+  .history-grid{ margin-top:36px; display:grid; grid-template-columns:1fr; gap:28px; align-items:start; }
+  @media (min-width:760px){ .history-grid{ grid-template-columns:320px 1fr; } }
+  .history-photo{ border:1px solid var(--line); border-radius:8px; background:var(--surface); padding:14px; }
+  .history-photo img{ width:100%; height:auto; display:block; border-radius:3px; filter:sepia(.18) contrast(1.02); }
+  .history-photo figcaption{ margin-top:10px; font-family:var(--font-mono); font-size:10.5px; line-height:1.6; color:var(--text-dimmer); }
+  .history-copy p{ font-size:14.5px; line-height:1.75; color:var(--text-dim); }
+  .history-copy p + p{ margin-top:12px; }
+  .history-source{ margin-top:16px; padding-top:12px; border-top:1px dashed var(--line); font-family:var(--font-mono); font-size:10.5px; line-height:1.7; color:var(--text-faint); }
+
   /* ---------- Planos ---------- */
   .plano-box{ margin-top:44px; position:relative; border:1px solid var(--line); border-radius:8px; background:var(--surface); padding:20px; }
   @media (min-width:720px){ .plano-box{ padding:32px; } }
@@ -313,6 +323,7 @@
     </a>
     <ul class="nav-links" id="navLinks">
       <li><a href="#visor">Modelo 3D</a></li>
+      <li><a href="#historia">Historia</a></li>
       <li><a href="#antecedentes">Antecedentes</a></li>
       <li><a href="#datos-tecnicos">Ficha técnica</a></li>
       <li><a href="#fases">Fases</a></li>
@@ -421,6 +432,26 @@
         </div>
       </div>
       <p class="viewer-caption">Modelo paramétrico de referencia — el modelo final se producirá en Blender/FreeCAD y se exportará en formato .GLTF</p>
+    </div>
+  </div>
+</section>
+
+<section class="section on-surface" id="historia">
+  <div class="wrap" style="max-width:1040px;">
+    <span class="eyebrow"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor"><circle cx="8" cy="8" r="6.5"/><path d="M8 0v4M8 12v4M0 8h4M12 8h4"/></svg>Memoria fotográfica</span>
+    <h2 class="section-title">Un cruce con historia</h2>
+    <p class="section-desc">El punto de cruce entre La Unión y La Victoria no es nuevo: la comunidad ha construido puentes sobre el río Cauca en este mismo lugar desde hace décadas. Esta fotografía de archivo documenta una de esas construcciones anteriores.</p>
+
+    <div class="history-grid">
+      <figure class="history-photo sheet-frame">
+        <img src="public/img/puente-historico-1.jpg" alt="Fotografía de archivo en blanco y negro de la construcción de un puente anterior sobre el río Cauca entre La Unión y La Victoria" loading="lazy">
+        <figcaption>Construcción del puente que comunica La Unión con La Victoria. La Unión, fecha por identificar.</figcaption>
+      </figure>
+      <div class="history-copy">
+        <p>Esta imagen forma parte del <strong>Archivo del Patrimonio Fotográfico y Fílmico del Valle del Cauca</strong>, custodiado por la Biblioteca Departamental del Valle "Jorge Garcés Borrero" mediante convenio con la Secretaría de Cultura Departamental. El archivo reúne el registro visual de obras, paisajes y vida cotidiana del departamento, y se conserva para su consulta permanente por parte de estudiantes e investigadores.</p>
+        <p>La Universidad Icesi colabora en la difusión del archivo, facilitando la tecnología que permite la consulta digital de las imágenes. Compartirla aquí conecta el proyecto actual del puente Mariano Ospina Pérez con la larga historia de este cruce sobre el río Cauca.</p>
+        <div class="history-source">Fuente: Archivo del Patrimonio Fotográfico y Fílmico del Valle del Cauca · Biblioteca Departamental del Valle "Jorge Garcés Borrero" · Secretaría de Cultura Departamental · Universidad Icesi (audiovisuales.icesi.edu.co)</div>
+      </div>
     </div>
   </div>
 </section>
