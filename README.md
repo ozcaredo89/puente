@@ -38,18 +38,66 @@ un modelo real modelado en Blender o FreeCAD, dentro del bloque
 El resto del visor (controles de órbita, botones de rotación/etiquetas/nivel
 del río, iluminación) sigue funcionando sin cambios.
 
-## Sección de comentarios
+## Sección de comentarios y calificaciones
 
-La sección "Comentarios" usa [giscus](https://giscus.app), que guarda los
-comentarios como hilos de **GitHub Discussions** de este mismo repositorio
-(no requiere backend ni base de datos propia). Ya está configurada y
-apuntando al repo `ozcaredo89/puente`, categoría `General`.
+La sección "Comentarios y calificaciones" (`#comentarios` en `index.html`)
+usa **Firebase** (Authentication + Firestore) de Google: los visitantes
+inician sesión con su cuenta de Google (no requiere GitHub ni ninguna otra
+cuenta), dejan una calificación de 1 a 5 estrellas y un comentario opcional,
+y pueden borrar solo sus propios comentarios. Todo corre en el navegador,
+sin backend propio.
 
-Si alguna vez necesitas regenerar la configuración (por ejemplo, si cambias
-de repositorio o de categoría), vuelve a <https://giscus.app>, escribe el
-repositorio, elige la categoría y copia los nuevos valores `data-repo-id` /
-`data-category-id` en el `<script>` de giscus dentro de `index.html`
-(sección `#comentarios`).
+### Activarla (una sola vez)
+
+1. Ve a la [consola de Firebase](https://console.firebase.google.com/) →
+   **Agregar proyecto** (el plan gratuito "Spark" alcanza de sobra).
+2. **Authentication** → pestaña *Sign-in method* → habilita **Google**.
+3. **Firestore Database** → **Crear base de datos** → modo producción →
+   elige una región cercana (ej. `us-central` o `southamerica-east1`).
+4. En *Reglas* de Firestore, reemplaza el contenido por:
+
+   ```
+   rules_version = '2';
+   service cloud.firestore {
+     match /databases/{database}/documents {
+       match /comentarios/{comentarioId} {
+         allow read: if true;
+         allow create: if request.auth != null
+           && request.resource.data.uid == request.auth.uid
+           && request.resource.data.rating is int
+           && request.resource.data.rating >= 1
+           && request.resource.data.rating <= 5
+           && request.resource.data.text is string
+           && request.resource.data.text.size() <= 1000;
+         allow update: if false;
+         allow delete: if request.auth != null && resource.data.uid == request.auth.uid;
+       }
+     }
+   }
+   ```
+
+   Esto permite que cualquiera lea los comentarios, que solo un usuario
+   autenticado con Google cree comentarios propios (con calificación 1–5 y
+   texto de máximo 1000 caracteres), y que cada quien solo pueda borrar los
+   suyos.
+
+5. Panel del proyecto (ícono de engranaje → *Configuración del proyecto*) →
+   sección *Tus apps* → agrega una **app Web** (ícono `</>`) → copia el
+   objeto `firebaseConfig` que te muestra.
+6. Pega esos valores (`apiKey`, `authDomain`, `projectId`, `storageBucket`,
+   `messagingSenderId`, `appId`) en las constantes correspondientes dentro
+   de `index.html`, sección `#comentarios`, reemplazando los valores
+   `"TODO_..."`.
+7. **Authentication** → *Settings* → *Authorized domains* → agrega el
+   dominio real donde vive el sitio (ej. `tusitio.netlify.app` y tu dominio
+   propio si tienes uno). Sin este paso, el inicio de sesión con Google
+   falla en producción.
+
+Mientras el paso 6 no esté hecho, la sección muestra un aviso de
+"pendiente de activar" en vez del widget. Estos valores de `firebaseConfig`
+son públicos por diseño en cualquier app de Firebase — la seguridad real la
+dan las *Firestore Security Rules* del paso 4, no el secreto de estas
+claves.
 
 ## Despliegue
 

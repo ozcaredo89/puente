@@ -293,6 +293,52 @@
   @media (min-width:720px){ .support-fine{ margin-inline:0; } }
   @media (max-width:719px){ .support-fine{ margin-inline:auto; } }
 
+  /* ---------- Comentarios y calificaciones ---------- */
+  .rese-summary{ display:flex; align-items:center; gap:18px; }
+  .rese-avg{ font-family:var(--font-mono); font-size:2.4rem; font-weight:800; color:var(--text); line-height:1; }
+  .rese-stars{ font-size:18px; letter-spacing:2px; color:var(--line-strong); }
+  .rese-stars .on, .rese-star-ro.on{ color:var(--gold); }
+  .rese-count{ margin-top:4px; font-size:12.5px; color:var(--text-dimmer); }
+
+  .rese-auth{ margin-top:22px; padding-top:22px; border-top:1px dashed var(--line); }
+  .rese-google-btn{
+    display:inline-flex; align-items:center; gap:10px; border:1px solid var(--line);
+    background:var(--bg); color:var(--text); font-size:14px; font-weight:600;
+    padding:11px 18px; border-radius:8px; transition:border-color .15s,background .15s;
+  }
+  .rese-google-btn:hover{ border-color:var(--accent); background:var(--surface); }
+  .rese-google-btn:disabled{ opacity:.6; cursor:default; }
+
+  .rese-user{ display:flex; align-items:center; gap:10px; font-size:14px; color:var(--text-dim); }
+  .rese-avatar{ width:32px; height:32px; border-radius:50%; background:var(--surface-2); flex-shrink:0; object-fit:cover; }
+  .rese-signout{ margin-left:auto; font-family:var(--font-mono); font-size:11px; color:var(--text-faint); background:none; border:none; text-decoration:underline; }
+  .rese-signout:hover{ color:var(--accent-strong); }
+
+  .rese-form{ margin-top:16px; display:flex; flex-direction:column; gap:12px; align-items:flex-start; }
+  .rese-star-picker{ display:flex; gap:4px; }
+  .rese-star{
+    background:none; border:none; font-size:26px; line-height:1; color:var(--line-strong);
+    padding:2px; transition:color .1s, transform .1s;
+  }
+  .rese-star:hover{ transform:scale(1.12); }
+  .rese-star.on{ color:var(--gold); }
+  .rese-form textarea{
+    width:100%; resize:vertical; min-height:70px; border:1px solid var(--line); border-radius:8px;
+    background:var(--bg); color:var(--text); font:14px/1.6 var(--font-display); padding:12px 14px;
+  }
+  .rese-form textarea:focus{ outline:none; border-color:var(--accent); }
+
+  .rese-list{ list-style:none; margin:26px 0 0; padding:0; display:flex; flex-direction:column; gap:18px; }
+  .rese-item{ display:flex; gap:12px; padding-top:18px; border-top:1px solid var(--line-soft); }
+  .rese-list > .rese-item:first-child{ padding-top:0; border-top:none; }
+  .rese-item-body{ flex:1; min-width:0; }
+  .rese-item-head{ display:flex; flex-wrap:wrap; align-items:center; gap:8px; font-size:13.5px; }
+  .rese-item-stars{ font-size:13px; letter-spacing:1px; color:var(--line-strong); }
+  .rese-item-date{ font-family:var(--font-mono); font-size:10.5px; color:var(--text-faint); }
+  .rese-item-text{ margin-top:6px; font-size:14px; line-height:1.65; color:var(--text-dim); }
+  .rese-delete{ margin-top:6px; background:none; border:none; font-family:var(--font-mono); font-size:10.5px; color:var(--rust); text-decoration:underline; padding:0; }
+  .rese-empty{ margin-top:20px; font-size:13.5px; color:var(--text-dimmer); }
+
   /* ---------- Footer ---------- */
   footer{ border-top:1px solid var(--line); padding:48px 0; }
   .footer-grid{ display:flex; flex-direction:column; gap:24px; }
@@ -558,29 +604,227 @@
 <section class="section on-surface" id="comentarios">
   <div class="wrap" style="max-width:900px;">
     <span class="eyebrow"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor"><circle cx="8" cy="8" r="6.5"/><path d="M8 0v4M8 12v4M0 8h4M12 8h4"/></svg>Participación</span>
-    <h2 class="section-title">Comentarios de la comunidad</h2>
-    <p class="section-desc">¿Tienes preguntas, observaciones o información adicional sobre el proyecto? Deja tu comentario aquí. Se inicia sesión con una cuenta de GitHub y los comentarios quedan guardados como discusiones públicas del repositorio del sitio.</p>
+    <h2 class="section-title">Comentarios y calificaciones</h2>
+    <p class="section-desc">¿Tienes preguntas, observaciones o información adicional sobre el proyecto? Califica el sitio y deja tu comentario. Inicia sesión con tu cuenta de <strong>Google</strong> — no se requiere cuenta de GitHub ni ninguna otra.</p>
 
-    <div class="support-box sheet-frame" style="margin-top:32px;">
-      <div class="giscus"></div>
+    <div class="support-box sheet-frame rese-box" style="margin-top:32px;">
+      <div class="rese-summary">
+        <div class="rese-avg" id="reseAvgNum">—</div>
+        <div>
+          <div class="rese-stars" id="reseAvgStars" aria-hidden="true"></div>
+          <div class="rese-count" id="reseCount">Cargando…</div>
+        </div>
+      </div>
+
+      <div class="rese-auth" id="reseAuthLoggedOut">
+        <button class="rese-google-btn" id="reseSignIn" type="button">
+          <svg viewBox="0 0 18 18" width="18" height="18" aria-hidden="true"><path fill="#4285F4" d="M17.64 9.2c0-.64-.06-1.25-.16-1.84H9v3.48h4.84a4.14 4.14 0 01-1.8 2.72v2.26h2.9c1.7-1.57 2.7-3.88 2.7-6.62z"/><path fill="#34A853" d="M9 18c2.43 0 4.47-.8 5.96-2.18l-2.9-2.26c-.8.54-1.84.86-3.06.86-2.35 0-4.34-1.59-5.05-3.72H.96v2.33A9 9 0 009 18z"/><path fill="#FBBC05" d="M3.95 10.7A5.4 5.4 0 013.68 9c0-.59.1-1.17.27-1.7V4.97H.96A9 9 0 000 9c0 1.45.35 2.83.96 4.03l2.99-2.33z"/><path fill="#EA4335" d="M9 3.58c1.32 0 2.51.45 3.44 1.35l2.58-2.58C13.46.89 11.43 0 9 0A9 9 0 00.96 4.97L3.95 7.3C4.66 5.17 6.65 3.58 9 3.58z"/></svg>
+          Iniciar sesión con Google para comentar
+        </button>
+      </div>
+
+      <div class="rese-auth" id="reseAuthLoggedIn" hidden>
+        <div class="rese-user">
+          <img id="reseUserPhoto" class="rese-avatar" src="" alt="">
+          <span id="reseUserName"></span>
+          <button class="rese-signout" id="reseSignOut" type="button">Cerrar sesión</button>
+        </div>
+        <form id="reseForm" class="rese-form">
+          <div class="rese-star-picker" id="reseStarPicker" role="radiogroup" aria-label="Tu calificación">
+            <button type="button" class="rese-star" data-val="1" aria-label="1 estrella">★</button>
+            <button type="button" class="rese-star" data-val="2" aria-label="2 estrellas">★</button>
+            <button type="button" class="rese-star" data-val="3" aria-label="3 estrellas">★</button>
+            <button type="button" class="rese-star" data-val="4" aria-label="4 estrellas">★</button>
+            <button type="button" class="rese-star" data-val="5" aria-label="5 estrellas">★</button>
+          </div>
+          <textarea id="reseTexto" maxlength="1000" rows="3" placeholder="Escribe tu comentario (opcional)"></textarea>
+          <button type="submit" class="btn btn-primary" id="reseSubmit">Publicar reseña</button>
+        </form>
+      </div>
+
+      <ul class="rese-list" id="reseList"></ul>
+      <p class="rese-empty" id="reseEmptyMsg" hidden>Aún no hay comentarios. ¡Sé el primero en escribir uno!</p>
     </div>
   </div>
 </section>
 
-<script src="https://giscus.app/client.js"
-        data-repo="ozcaredo89/puente"
-        data-repo-id="R_kgDOUVtqpw"
-        data-category="General"
-        data-category-id="DIC_kwDOUVtqp84DFWC_"
-        data-mapping="pathname"
-        data-strict="0"
-        data-reactions-enabled="1"
-        data-emit-metadata="0"
-        data-input-position="top"
-        data-theme="light"
-        data-lang="es"
-        crossorigin="anonymous"
-        async>
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
+  import {
+    getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged
+  } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
+  import {
+    getFirestore, collection, addDoc, deleteDoc, doc,
+    onSnapshot, query, orderBy, serverTimestamp
+  } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+
+  // Configuración del proyecto de Firebase (Authentication + Firestore).
+  // Ver la sección "Activar los comentarios" del README para los pasos de
+  // creación del proyecto y estas credenciales (son públicas por diseño en
+  // apps de Firebase: la seguridad real la dan las Firestore Security Rules).
+  var firebaseConfig = {
+    apiKey: "TODO_FIREBASE_API_KEY",
+    authDomain: "TODO_PROJECT_ID.firebaseapp.com",
+    projectId: "TODO_PROJECT_ID",
+    storageBucket: "TODO_PROJECT_ID.appspot.com",
+    messagingSenderId: "TODO_SENDER_ID",
+    appId: "TODO_APP_ID"
+  };
+
+  var reseBox = document.querySelector('#comentarios .rese-box');
+
+  if (firebaseConfig.apiKey.indexOf('TODO') === 0) {
+    reseBox.innerHTML =
+      '<p class="rese-empty">Comentarios pendientes de activar: falta configurar Firebase en <code class="mono">index.html</code> (ver README).</p>';
+  } else {
+    var app = initializeApp(firebaseConfig);
+    var auth = getAuth(app);
+    var db = getFirestore(app);
+    var provider = new GoogleAuthProvider();
+
+    var elSignIn = document.getElementById('reseSignIn');
+    var elSignOut = document.getElementById('reseSignOut');
+    var elLoggedOut = document.getElementById('reseAuthLoggedOut');
+    var elLoggedIn = document.getElementById('reseAuthLoggedIn');
+    var elUserPhoto = document.getElementById('reseUserPhoto');
+    var elUserName = document.getElementById('reseUserName');
+    var elForm = document.getElementById('reseForm');
+    var elTexto = document.getElementById('reseTexto');
+    var elSubmit = document.getElementById('reseSubmit');
+    var elStars = Array.prototype.slice.call(document.querySelectorAll('#reseStarPicker .rese-star'));
+    var elList = document.getElementById('reseList');
+    var elEmpty = document.getElementById('reseEmptyMsg');
+    var elAvgNum = document.getElementById('reseAvgNum');
+    var elAvgStars = document.getElementById('reseAvgStars');
+    var elCount = document.getElementById('reseCount');
+
+    var ratingSel = 0;
+    function renderStarPicker(){
+      elStars.forEach(function(btn){
+        var v = parseInt(btn.dataset.val, 10);
+        btn.classList.toggle('on', v <= ratingSel);
+        btn.setAttribute('aria-checked', v === ratingSel ? 'true' : 'false');
+      });
+    }
+    elStars.forEach(function(btn){
+      btn.addEventListener('click', function(){
+        ratingSel = parseInt(btn.dataset.val, 10);
+        renderStarPicker();
+      });
+    });
+
+    elSignIn.addEventListener('click', function(){
+      elSignIn.disabled = true;
+      signInWithPopup(auth, provider).catch(function(err){
+        console.error('Error de inicio de sesión con Google', err);
+      }).finally(function(){ elSignIn.disabled = false; });
+    });
+    elSignOut.addEventListener('click', function(){ signOut(auth); });
+
+    onAuthStateChanged(auth, function(user){
+      if (user) {
+        elLoggedOut.hidden = true;
+        elLoggedIn.hidden = false;
+        elUserPhoto.src = user.photoURL || '';
+        elUserName.textContent = user.displayName || user.email || 'Usuario de Google';
+      } else {
+        elLoggedOut.hidden = false;
+        elLoggedIn.hidden = true;
+        ratingSel = 0; renderStarPicker();
+      }
+      renderList();
+    });
+
+    elForm.addEventListener('submit', function(e){
+      e.preventDefault();
+      var user = auth.currentUser;
+      if (!user) return;
+      if (ratingSel < 1) { elStars[0].focus(); return; }
+      var texto = elTexto.value.trim().slice(0, 1000);
+      elSubmit.disabled = true;
+      addDoc(collection(db, 'comentarios'), {
+        uid: user.uid,
+        name: user.displayName || 'Usuario de Google',
+        photoURL: user.photoURL || '',
+        rating: ratingSel,
+        text: texto,
+        createdAt: serverTimestamp()
+      }).then(function(){
+        elTexto.value = '';
+        ratingSel = 0; renderStarPicker();
+      }).catch(function(err){
+        console.error('No se pudo publicar el comentario', err);
+        alert('No se pudo publicar tu comentario. Intenta de nuevo.');
+      }).finally(function(){
+        elSubmit.disabled = false;
+      });
+    });
+
+    function starsHtml(n){
+      var out = '';
+      for (var i=1;i<=5;i++){ out += '<span class="rese-star-ro'+(i<=n?' on':'')+'">★</span>'; }
+      return out;
+    }
+    function fmtFecha(ts){
+      if (!ts || !ts.toDate) return '';
+      return ts.toDate().toLocaleDateString('es-CO', {year:'numeric', month:'short', day:'numeric'});
+    }
+    function escapeHtml(s){
+      return String(s).replace(/[&<>"']/g, function(c){
+        return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
+      });
+    }
+
+    var ultimosDocs = [];
+    function renderList(){
+      elList.innerHTML = '';
+      var total = ultimosDocs.length, suma = 0;
+      ultimosDocs.forEach(function(item){
+        var c = item.data;
+        suma += (c.rating || 0);
+        var esMio = auth.currentUser && auth.currentUser.uid === c.uid;
+        var li = document.createElement('li');
+        li.className = 'rese-item';
+        li.innerHTML =
+          '<img class="rese-avatar" src="'+escapeHtml(c.photoURL||'')+'" alt="" referrerpolicy="no-referrer">' +
+          '<div class="rese-item-body">' +
+            '<div class="rese-item-head"><strong>'+escapeHtml(c.name||'Usuario de Google')+'</strong>' +
+              '<span class="rese-item-stars">'+starsHtml(c.rating||0)+'</span>' +
+              '<span class="rese-item-date">'+fmtFecha(c.createdAt)+'</span></div>' +
+            (c.text ? '<p class="rese-item-text">'+escapeHtml(c.text)+'</p>' : '') +
+            (esMio ? '<button type="button" class="rese-delete" data-id="'+item.id+'">Eliminar</button>' : '') +
+          '</div>';
+        elList.appendChild(li);
+      });
+      elEmpty.hidden = total > 0;
+      if (total > 0) {
+        var avg = suma / total;
+        elAvgNum.textContent = avg.toFixed(1);
+        elAvgStars.innerHTML = starsHtml(Math.round(avg));
+        elCount.textContent = total + (total === 1 ? ' calificación' : ' calificaciones');
+      } else {
+        elAvgNum.textContent = '—';
+        elAvgStars.innerHTML = starsHtml(0);
+        elCount.textContent = 'Sé el primero en calificar';
+      }
+      elList.querySelectorAll('.rese-delete').forEach(function(btn){
+        btn.addEventListener('click', function(){
+          if (!confirm('¿Eliminar tu comentario?')) return;
+          deleteDoc(doc(db, 'comentarios', btn.dataset.id));
+        });
+      });
+    }
+
+    var q = query(collection(db, 'comentarios'), orderBy('createdAt', 'desc'));
+    onSnapshot(q, function(snap){
+      ultimosDocs = [];
+      snap.forEach(function(d){ ultimosDocs.push({id:d.id, data:d.data()}); });
+      renderList();
+    }, function(err){
+      console.error('No se pudieron cargar los comentarios', err);
+      elCount.textContent = 'No se pudieron cargar los comentarios.';
+    });
+  }
 </script>
 
 <footer>
