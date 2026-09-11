@@ -11,8 +11,8 @@ Request (PR).
    un cambio grande (nueva sección, cambio de datos técnicos, etc.). Para
    correcciones pequeñas (typos, ajustes de estilo, bugs menores) puedes ir
    directo al PR.
-2. Lee el `README.md` para entender la estructura del proyecto (`app/`,
-   `components/`, `data/`).
+2. Lee el `README.md` para entender la estructura del proyecto (todo el
+   sitio vive en un único `index.html`).
 
 ## Flujo de trabajo
 
@@ -30,34 +30,26 @@ Request (PR).
    # ejemplos: fix/typo-footer, feat/nueva-seccion-planos
    ```
 
-3. Instala las dependencias y levanta el entorno de desarrollo:
+3. Abre `index.html` directamente en el navegador para ver tus cambios, o
+   sirve la carpeta con cualquier servidor estático:
 
    ```bash
-   npm install
-   npm run dev
+   npx serve .
    ```
 
-   El sitio queda disponible en [http://localhost:3000](http://localhost:3000).
+   No hay paso de build ni dependencias que instalar: es HTML + CSS +
+   JavaScript vanilla en un solo archivo.
 
 4. Haz tus cambios. Algunas convenciones del proyecto:
    - Los textos y cifras técnicas (luces, resistencias, normativa CCP-14/NSR-10,
-     etc.) se centralizan en `data/proyecto.js`. Evita duplicar esos valores
-     directamente en los componentes.
-   - Los componentes viven en `components/` y usan Tailwind CSS para estilos.
+     etc.) están centralizados como datos JavaScript dentro de `index.html`
+     (arrays como `DATOS`, `FASES`, `SPECS`). Evita duplicar esos valores en
+     varios lugares del HTML.
    - Si tu cambio afecta datos técnicos (medidas, materiales, normativa),
      indica la fuente en la descripción del PR.
 
-5. Verifica que el lint pase antes de subir tus cambios:
-
-   ```bash
-   npm run lint
-   ```
-
-6. Confirma que el proyecto compila correctamente:
-
-   ```bash
-   npm run build
-   ```
+5. Antes de subir tus cambios, abre el archivo en el navegador y revisa la
+   consola en busca de errores de JavaScript.
 
 ## Enviar el Pull Request
 
